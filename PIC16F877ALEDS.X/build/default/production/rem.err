@@ -1,0 +1,86 @@
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 2 : Symbol not previously defined (b_level)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 2 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 2 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 3 : Symbol not previously defined (b_level)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 3 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 5 : Symbol not previously defined (get_level)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 5 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 5 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 6 : Symbol not previously defined (get_level)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 6 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 8 : Symbol not previously defined (tempvar)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 8 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 8 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 9 : Symbol not previously defined (tempvar)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 9 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 11 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 12 : Symbol not previously defined (tempvar)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 12 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 13 : Symbol not previously defined (STATUS)
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 13 : Symbol not previously defined (Z)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 13 : Executable code and data must be defined in an appropriate section
+Error[151]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 14 : Operand contains unresolvable labels or is too complex
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 14 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 15 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 16 : Symbol not previously defined (PORTD)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 16 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 16 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 17 : Symbol not previously defined (PORTD)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 17 : Executable code and data must be defined in an appropriate section
+Error[151]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 18 : Operand contains unresolvable labels or is too complex
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 18 : Executable code and data must be defined in an appropriate section
+Error[150]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 20 : Labels must be defined in a code or data section when making an object file
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 21 : Symbol not previously defined (tempvar)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 21 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 23 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 23 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 23 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 24 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 24 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 25 : Symbol not previously defined (STATUS)
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 25 : Symbol not previously defined (Z)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 25 : Executable code and data must be defined in an appropriate section
+Error[151]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 26 : Operand contains unresolvable labels or is too complex
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 26 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 27 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 28 : Symbol not previously defined (PORTD)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 28 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 28 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 29 : Symbol not previously defined (PORTD)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 29 : Executable code and data must be defined in an appropriate section
+Error[150]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 31 : Labels must be defined in a code or data section when making an object file
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 33 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 34 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 34 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 34 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 35 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 35 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 36 : Symbol not previously defined (STATUS)
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 36 : Symbol not previously defined (Z)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 36 : Executable code and data must be defined in an appropriate section
+Error[151]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 37 : Operand contains unresolvable labels or is too complex
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 37 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 38 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 39 : Symbol not previously defined (PORTD)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 39 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 39 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 40 : Symbol not previously defined (PORTD)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 40 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 42 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 42 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 42 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 43 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 43 : Executable code and data must be defined in an appropriate section
+Error[150]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 45 : Labels must be defined in a code or data section when making an object file
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 46 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 46 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 46 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 47 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 47 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 49 : Symbol not previously defined (INTCON)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 49 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 49 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 50 : Symbol not previously defined (INTCON)
+Error[113]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 50 : Symbol not previously defined (TMR0IF)
+Error[152]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 50 : Executable code and data must be defined in an appropriate section
+Error[129]   /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/rem.asm 53 : Expected (END)

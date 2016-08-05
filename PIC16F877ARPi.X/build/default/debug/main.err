@@ -1,0 +1,6 @@
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/main.asm 42 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/main.asm 43 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/main.asm 44 : Found directive in column 1. (extern)
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/main.asm 241 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/main.asm 245 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/main.asm 249 : Register in operand not in bank 0.  Ensure that bank bits are correct.

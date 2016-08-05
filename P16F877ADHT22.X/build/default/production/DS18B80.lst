@@ -1,0 +1,1004 @@
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 #include    <p16f877a.inc>  ; processor specific variable definitions
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : May 28 2014
+                      00005 ;  MPASM PIC16F877A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00567         LIST
+                      00002 #include    "macros.inc"
+                      00001 ;************* Macros ****************
+                      00002 BANK0 MACRO
+                      00003     bcf STATUS, RP0
+                      00004     bcf STATUS, RP1
+                      00005     ENDM
+                      00006 
+                      00007 BANK1 MACRO
+                      00008     bsf STATUS, RP0
+                      00009     bcf STATUS, RP1
+                      00010     ENDM
+                      00011 
+                      00012 BANK2 MACRO
+                      00013     bcf STATUS, RP0
+                      00014     bsf STATUS, RP1
+                      00015     ENDM
+                      00016 
+                      00017 BANK3 MACRO
+                      00018     bsf STATUS, RP0
+                      00019     bsf STATUS, RP1
+                      00020     ENDM
+                      00021 ;*************************************
+                      00003 
+                      00004 DS18Hi MACRO
+                      00005     BANK0
+                      00006     bcf PORTB, RB5
+                      00007     BANK1
+                      00008     bsf TRISB, RB5
+                      00009     BANK0
+                      00010     ENDM
+                      00011 
+                      00012 DS18Lo MACRO
+                      00013     BANK0
+                      00014     bcf PORTB, RB5
+                      00015     BANK1
+                      00016     bcf TRISB, RB5
+                      00017     BANK0
+                      00018     ENDM
+                      00019 
+Warning[205]: Found directive in column 1. (global)
+  0000                00020 global ds18b20_init
+Warning[205]: Found directive in column 1. (global)
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+  0000                00021 global ds18b20_wbyte
+Warning[205]: Found directive in column 1. (global)
+  0000                00022 global ds18b20_rbyte
+                      00023 ;global ds18b20_start
+                      00024 
+                      00025 
+                      00026 
+Warning[205]: Found directive in column 1. (UDATA)
+                      00027 UDATA
+0000                  00028 ds18b20_buffer  RES 8                   ; Buffer for transactions
+0008                  00029 ds18b20_temp    RES 2
+000A                  00030 ds18b20_count   RES 1
+                      00031 
+                      00032 
+                      00033 
+Warning[205]: Found directive in column 1. (CODE)
+                      00034 CODE
+                      00035 ;====================================================
+0000                  00036 ds18b20_delay500us
+Warning[203]: Found opcode in column 1. (movlw)
+0000   30FA           00037 movlw   .250              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+0001   ???? ????      00038 banksel ds18b20_temp      ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0003   00??           00039 movwf   ds18b20_temp      ;200ns
+                      00040 
+0004                  00041 ds18b20_d_loop1
+0004   0000           00042     nop                   ;200ns
+0005   0000           00043     nop                   ;200ns
+0006   0000           00044     nop                   ;200ns
+0007   0000           00045     nop                   ;200ns
+0008   0000           00046     nop                   ;200ns
+0009   0000           00047     nop                   ;200ns
+000A   ???? ????      00048     banksel ds18b20_temp    ;200ns
+000C   0B??           00049     decfsz  ds18b20_temp, f ;200ns/400ns
+000D   2???           00050     goto    ds18b20_d_loop1 ;400ns
+                      00051 
+000E   0008           00052     return                ;400ns
+                      00053 ;====================================================
+                      00054 ;====================================================
+000F                  00055 ds18b20_delay10us
+Warning[203]: Found opcode in column 1. (movlw)
+000F   3005           00056 movlw   .5              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+0010   ???? ????      00057 banksel ds18b20_temp      ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0012   00??           00058 movwf   ds18b20_temp      ;200ns
+                      00059 
+0013                  00060 ds18b20_d_loop2
+0013   0000           00061     nop                   ;200ns
+0014   0000           00062     nop                   ;200ns
+0015   0000           00063     nop                   ;200ns
+0016   0000           00064     nop                   ;200ns
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0017   0000           00065     nop                   ;200ns
+0018   0000           00066     nop                   ;200ns
+0019   ???? ????      00067     banksel ds18b20_temp    ;200ns
+001B   0B??           00068     decfsz  ds18b20_temp, f ;200ns/400ns
+001C   2???           00069     goto    ds18b20_d_loop2 ;400ns
+                      00070 
+001D   0008           00071     return                ;400ns
+                      00072 ;====================================================
+                      00073 ;====================================================
+001E                  00074 ds18b20_delay50us
+Warning[203]: Found opcode in column 1. (movlw)
+001E   3019           00075 movlw   .25              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+001F   ???? ????      00076 banksel ds18b20_temp      ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0021   00??           00077 movwf   ds18b20_temp      ;200ns
+                      00078 
+0022                  00079 ds18b20_d_loop3
+0022   0000           00080     nop                   ;200ns
+0023   0000           00081     nop                   ;200ns
+0024   0000           00082     nop                   ;200ns
+0025   0000           00083     nop                   ;200ns
+0026   0000           00084     nop                   ;200ns
+0027   0000           00085     nop                   ;200ns
+0028   ???? ????      00086     banksel ds18b20_temp    ;200ns
+002A   0B??           00087     decfsz  ds18b20_temp, f ;200ns/400ns
+002B   2???           00088     goto    ds18b20_d_loop3 ;400ns
+                      00089 
+002C   0008           00090     return                ;400ns
+                      00091 ;====================================================
+002D                  00092 ds18b20_init
+                      00093     ; Pulling up
+                      00094     DS18Hi
+                          M     BANK0
+002D   1283               M     bcf STATUS, RP0
+002E   1303               M     bcf STATUS, RP1
+002F   1286               M     bcf PORTB, RB5
+                          M     BANK1
+0030   1683               M     bsf STATUS, RP0
+0031   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0032   1686               M     bsf TRISB, RB5
+                          M     BANK0
+0033   1283               M     bcf STATUS, RP0
+0034   1303               M     bcf STATUS, RP1
+                      00095 
+0035   ???? ????      00096     pagesel ds18b20_delay500us
+0037   2???           00097     call    ds18b20_delay500us
+                      00098 
+                      00099     ;Pulling down
+                      00100     DS18Lo
+                          M     BANK0
+0038   1283               M     bcf STATUS, RP0
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0039   1303               M     bcf STATUS, RP1
+003A   1286               M     bcf PORTB, RB5
+                          M     BANK1
+003B   1683               M     bsf STATUS, RP0
+003C   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+003D   1286               M     bcf TRISB, RB5
+                          M     BANK0
+003E   1283               M     bcf STATUS, RP0
+003F   1303               M     bcf STATUS, RP1
+                      00101 
+0040   ???? ????      00102     pagesel ds18b20_delay500us
+0042   2???           00103     call    ds18b20_delay500us
+                      00104 
+                      00105     ; Pulling up
+                      00106     DS18Hi
+                          M     BANK0
+0043   1283               M     bcf STATUS, RP0
+0044   1303               M     bcf STATUS, RP1
+0045   1286               M     bcf PORTB, RB5
+                          M     BANK1
+0046   1683               M     bsf STATUS, RP0
+0047   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0048   1686               M     bsf TRISB, RB5
+                          M     BANK0
+0049   1283               M     bcf STATUS, RP0
+004A   1303               M     bcf STATUS, RP1
+                      00107 
+                      00108     ; Wait till the sensor pulls down
+004B   1283 1303      00109     banksel PORTB
+004D   1A86           00110     btfsc   PORTB, RB5
+004E   2???           00111     goto    $-1
+                      00112 
+004F   0008           00113     return
+                      00114 ;===================================================
+0050                  00115 ds18b20_cmd
+                      00116     ; Pulling up
+                      00117     DS18Hi
+                          M     BANK0
+0050   1283               M     bcf STATUS, RP0
+0051   1303               M     bcf STATUS, RP1
+0052   1286               M     bcf PORTB, RB5
+                          M     BANK1
+0053   1683               M     bsf STATUS, RP0
+0054   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0055   1686               M     bsf TRISB, RB5
+                          M     BANK0
+0056   1283               M     bcf STATUS, RP0
+0057   1303               M     bcf STATUS, RP1
+                      00118 
+0058   ???? ????      00119     pagesel ds18b20_delay500us
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+005A   2???           00120     call    ds18b20_delay500us
+                      00121 
+                      00122     ;Pulling down
+                      00123     DS18Lo
+                          M     BANK0
+005B   1283               M     bcf STATUS, RP0
+005C   1303               M     bcf STATUS, RP1
+005D   1286               M     bcf PORTB, RB5
+                          M     BANK1
+005E   1683               M     bsf STATUS, RP0
+005F   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0060   1286               M     bcf TRISB, RB5
+                          M     BANK0
+0061   1283               M     bcf STATUS, RP0
+0062   1303               M     bcf STATUS, RP1
+                      00124 
+0063   ???? ????      00125     pagesel ds18b20_delay500us
+0065   2???           00126     call    ds18b20_delay500us
+                      00127 
+                      00128     ; Pulling up
+                      00129     DS18Hi
+                          M     BANK0
+0066   1283               M     bcf STATUS, RP0
+0067   1303               M     bcf STATUS, RP1
+0068   1286               M     bcf PORTB, RB5
+                          M     BANK1
+0069   1683               M     bsf STATUS, RP0
+006A   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+006B   1686               M     bsf TRISB, RB5
+                          M     BANK0
+006C   1283               M     bcf STATUS, RP0
+006D   1303               M     bcf STATUS, RP1
+                      00130 
+                      00131     ; Wait till the sensor pulls down
+006E   1283 1303      00132     banksel PORTB
+0070   1A86           00133     btfsc   PORTB, RB5
+0071   2???           00134     goto    $-1
+                      00135 
+0072   0008           00136     return
+                      00137 ;===================================================
+                      00138 ;===================================================
+0073                  00139 ds18b20_wbyte
+0073   ???? ????      00140     banksel ds18b20_buffer
+0075   00??           00141     movwf   ds18b20_buffer
+                      00142 
+0076   3008           00143     movlw   .8
+0077   ???? ????      00144     banksel ds18b20_count
+0079   00??           00145     movwf   ds18b20_count
+                      00146 
+007A                  00147 tx_loop:
+                      00148     ;Pulling down
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00149     DS18Lo
+                          M     BANK0
+007A   1283               M     bcf STATUS, RP0
+007B   1303               M     bcf STATUS, RP1
+007C   1286               M     bcf PORTB, RB5
+                          M     BANK1
+007D   1683               M     bsf STATUS, RP0
+007E   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+007F   1286               M     bcf TRISB, RB5
+                          M     BANK0
+0080   1283               M     bcf STATUS, RP0
+0081   1303               M     bcf STATUS, RP1
+                      00150 
+0082   ???? ????      00151     pagesel ds18b20_delay10us
+0084   2???           00152     call    ds18b20_delay10us
+                      00153 
+0085   ???? ????      00154     banksel ds18b20_buffer
+0087   0C??           00155     rrf     ds18b20_buffer, f
+0088   ???? ????      00156     pagesel ds18b20_bwone
+008A   1803           00157     btfsc   STATUS, C
+008B   2???           00158     call    ds18b20_bwone
+                      00159 
+008C   ???? ????      00160     pagesel ds18b20_delay50us
+008E   2???           00161     call    ds18b20_delay50us
+                      00162 
+                      00163     ; Pulling up
+                      00164     DS18Hi
+                          M     BANK0
+008F   1283               M     bcf STATUS, RP0
+0090   1303               M     bcf STATUS, RP1
+0091   1286               M     bcf PORTB, RB5
+                          M     BANK1
+0092   1683               M     bsf STATUS, RP0
+0093   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0094   1686               M     bsf TRISB, RB5
+                          M     BANK0
+0095   1283               M     bcf STATUS, RP0
+0096   1303               M     bcf STATUS, RP1
+                      00165 
+0097   0000           00166     nop
+0098   0000           00167     nop
+0099   0000           00168     nop
+009A   0000           00169     nop
+009B   0000           00170     nop
+                      00171 
+009C   ???? ????      00172     banksel ds18b20_count
+009E   0B??           00173     decfsz  ds18b20_count, f
+009F   2???           00174     goto    tx_loop
+                      00175     
+                      00176     
+00A0   0008           00177     return
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00178 ;===================================================
+                      00179 ;===================================================
+00A1                  00180 ds18b20_rbyte
+00A1   ???? ????      00181     banksel ds18b20_buffer
+00A3   01??           00182     clrf   ds18b20_buffer
+                      00183 
+00A4   3008           00184     movlw   .8
+00A5   ???? ????      00185     banksel ds18b20_count
+00A7   00??           00186     movwf   ds18b20_count
+                      00187 
+00A8                  00188 rx_loop:
+                      00189     ;Pulling down
+                      00190     DS18Lo
+                          M     BANK0
+00A8   1283               M     bcf STATUS, RP0
+00A9   1303               M     bcf STATUS, RP1
+00AA   1286               M     bcf PORTB, RB5
+                          M     BANK1
+00AB   1683               M     bsf STATUS, RP0
+00AC   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00AD   1286               M     bcf TRISB, RB5
+                          M     BANK0
+00AE   1283               M     bcf STATUS, RP0
+00AF   1303               M     bcf STATUS, RP1
+                      00191 
+00B0   ???? ????      00192     pagesel ds18b20_delay10us
+00B2   2???           00193     call    ds18b20_delay10us
+                      00194 
+                      00195     ; Pulling up
+                      00196     DS18Hi
+                          M     BANK0
+00B3   1283               M     bcf STATUS, RP0
+00B4   1303               M     bcf STATUS, RP1
+00B5   1286               M     bcf PORTB, RB5
+                          M     BANK1
+00B6   1683               M     bsf STATUS, RP0
+00B7   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00B8   1686               M     bsf TRISB, RB5
+                          M     BANK0
+00B9   1283               M     bcf STATUS, RP0
+00BA   1303               M     bcf STATUS, RP1
+                      00197 
+00BB   0000           00198     nop
+00BC   0000           00199     nop
+00BD   0000           00200     nop
+00BE   0000           00201     nop
+00BF   0000           00202     nop
+                      00203 
+00C0   1003           00204     bcf     STATUS, C
+00C1   1283 1303      00205     banksel PORTB
+00C3   1A86           00206     btfsc   PORTB, RB5
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00C4   1403           00207     bsf     STATUS, C
+00C5   ???? ????      00208     banksel ds18b20_buffer
+00C7   0C??           00209     rrf     ds18b20_buffer, f
+                      00210     
+00C8   ???? ????      00211     pagesel ds18b20_delay50us
+00CA   2???           00212     call    ds18b20_delay50us
+                      00213 
+00CB   ???? ????      00214     banksel ds18b20_count
+00CD   0B??           00215     decfsz  ds18b20_count, f
+00CE   2???           00216     goto    rx_loop
+                      00217 
+00CF   ???? ????      00218     banksel ds18b20_buffer
+00D1   0E??           00219     swapf   ds18b20_buffer, f
+00D2   300F           00220     movlw   0x0F
+00D3   05??           00221     andwf   ds18b20_buffer, f
+00D4   08??           00222     movf    ds18b20_buffer, w
+                      00223 
+                      00224     ;movlw   .65
+                      00225     ;movlw   .15
+00D5   3E30           00226     addlw   0x30
+                      00227 
+00D6   0008           00228     return
+                      00229 ;===================================================
+00D7                  00230 ds18b20_bwone
+                      00231     ;Pulling down
+                      00232     ;DS18Lo
+                      00233 
+                      00234     ;pagesel ds18b20_delay10us
+                      00235     ;call    ds18b20_delay10us
+                      00236 
+                      00237     ; Pulling up
+                      00238     DS18Hi
+                          M     BANK0
+00D7   1283               M     bcf STATUS, RP0
+00D8   1303               M     bcf STATUS, RP1
+00D9   1286               M     bcf PORTB, RB5
+                          M     BANK1
+00DA   1683               M     bsf STATUS, RP0
+00DB   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00DC   1686               M     bsf TRISB, RB5
+                          M     BANK0
+00DD   1283               M     bcf STATUS, RP0
+00DE   1303               M     bcf STATUS, RP1
+                      00239 
+                      00240     ;pagesel ds18b20_delay50us
+                      00241     ;call    ds18b20_delay50us
+                      00242 
+00DF   0008           00243     return
+                      00244 ;===================================================
+                      00245 ;===================================================
+00E0                  00246 ds18b20_bwzero
+                      00247     ;Pulling down
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00248     DS18Lo
+                          M     BANK0
+00E0   1283               M     bcf STATUS, RP0
+00E1   1303               M     bcf STATUS, RP1
+00E2   1286               M     bcf PORTB, RB5
+                          M     BANK1
+00E3   1683               M     bsf STATUS, RP0
+00E4   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00E5   1286               M     bcf TRISB, RB5
+                          M     BANK0
+00E6   1283               M     bcf STATUS, RP0
+00E7   1303               M     bcf STATUS, RP1
+                      00249 
+00E8   ???? ????      00250     pagesel ds18b20_delay10us
+00EA   2???           00251     call    ds18b20_delay10us
+                      00252 
+00EB   ???? ????      00253     pagesel ds18b20_delay50us
+00ED   2???           00254     call    ds18b20_delay50us
+                      00255 
+                      00256     ; Pulling up
+                      00257     DS18Hi
+                          M     BANK0
+00EE   1283               M     bcf STATUS, RP0
+00EF   1303               M     bcf STATUS, RP1
+00F0   1286               M     bcf PORTB, RB5
+                          M     BANK1
+00F1   1683               M     bsf STATUS, RP0
+00F2   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00F3   1686               M     bsf TRISB, RB5
+                          M     BANK0
+00F4   1283               M     bcf STATUS, RP0
+00F5   1303               M     bcf STATUS, RP1
+                      00258 
+00F6   0008           00259     return
+                      00260 ;===================================================
+                      00261 ;===================================================
+00F7                  00262 ds18b20_bread
+                      00263     ;Pulling down
+                      00264     DS18Lo
+                          M     BANK0
+00F7   1283               M     bcf STATUS, RP0
+00F8   1303               M     bcf STATUS, RP1
+00F9   1286               M     bcf PORTB, RB5
+                          M     BANK1
+00FA   1683               M     bsf STATUS, RP0
+00FB   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+00FC   1286               M     bcf TRISB, RB5
+                          M     BANK0
+00FD   1283               M     bcf STATUS, RP0
+00FE   1303               M     bcf STATUS, RP1
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00265     
+00FF   0000           00266     nop
+0100   0000           00267     nop
+0101   0000           00268     nop
+0102   0000           00269     nop
+0103   0000           00270     nop
+0104   0000           00271     nop
+0105   0000           00272     nop
+0106   0000           00273     nop
+                      00274 
+                      00275     ; Pulling up
+                      00276     DS18Hi
+                          M     BANK0
+0107   1283               M     bcf STATUS, RP0
+0108   1303               M     bcf STATUS, RP1
+0109   1286               M     bcf PORTB, RB5
+                          M     BANK1
+010A   1683               M     bsf STATUS, RP0
+010B   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+010C   1686               M     bsf TRISB, RB5
+                          M     BANK0
+010D   1283               M     bcf STATUS, RP0
+010E   1303               M     bcf STATUS, RP1
+                      00277 
+010F   ???? ????      00278     pagesel ds18b20_delay10us
+0111   2???           00279     call    ds18b20_delay10us
+                      00280 
+0112   0000           00281     nop
+0113   0000           00282     nop
+                      00283 
+                      00284     ;Sampling
+0114   1283 1303      00285     banksel PORTB
+0116   1A86           00286     btfsc   PORTB, RB5
+0117   3401           00287     retlw   .1
+0118   3400           00288     retlw   .0
+                      00289 
+0119   0008           00290     return
+                      00291 ;===================================================
+Warning[205]: Found directive in column 1. (END)
+                      00292 END
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BANK0                             
+BANK1                             
+BANK2                             
+BANK3                             
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DS18Hi                            
+DS18Lo                            
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 15
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_.code_004E                       0000004E
+_.code_0071                       00000071
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+ds18b20_bread                     000000F7
+ds18b20_buffer                    00000000
+ds18b20_bwone                     000000D7
+ds18b20_bwzero                    000000E0
+ds18b20_cmd                       00000050
+ds18b20_count                     0000000A
+ds18b20_d_loop1                   00000004
+ds18b20_d_loop2                   00000013
+ds18b20_d_loop3                   00000022
+ds18b20_delay10us                 0000000F
+ds18b20_delay500us                00000000
+ds18b20_delay50us                 0000001E
+ds18b20_init                      0000002D
+ds18b20_rbyte                     000000A1
+ds18b20_temp                      00000008
+ds18b20_wbyte                     00000073
+rx_loop                           000000A8
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  13:01:20         PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+tx_loop                           0000007A
+
+Errors   :     0
+Warnings :    15 reported,     0 suppressed
+Messages :    15 reported,     0 suppressed
+
+

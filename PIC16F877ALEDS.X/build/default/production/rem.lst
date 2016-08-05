@@ -1,0 +1,172 @@
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:16         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;Duty cycle checking
+Error[113]  : Symbol not previously defined (b_level)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00002     banksel b_level
+Error[113]  : Symbol not previously defined (b_level)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00003     movf    b_level, w
+                      00004 
+Error[113]  : Symbol not previously defined (get_level)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00005     pagesel get_level
+Error[113]  : Symbol not previously defined (get_level)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00006     call    get_level
+                      00007 
+Error[113]  : Symbol not previously defined (tempvar)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00008     banksel tempvar
+Error[113]  : Symbol not previously defined (tempvar)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00009     movwf   tempvar
+                      00010 
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00011     movlw   .0
+Error[113]  : Symbol not previously defined (tempvar)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00012     xorwf   tempvar, w
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00013     btfss   STATUS, Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00014     goto    _duty_start_
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00015     movlw   0x00
+Error[113]  : Symbol not previously defined (PORTD)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00016     banksel PORTD
+Error[113]  : Symbol not previously defined (PORTD)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00017     movwf   PORTD
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00018     goto    _period_done_
+                      00019 
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00020 _duty_start_:
+Error[113]  : Symbol not previously defined (tempvar)
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:16         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00021     movf    tempvar, w
+                      00022     ;movlw   .0
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00023     banksel free_counter
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00024     xorwf   free_counter, w
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00025     btfss   STATUS, Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00026     goto    _duty_done_
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00027     movlw   0x00
+Error[113]  : Symbol not previously defined (PORTD)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00028     banksel PORTD
+Error[113]  : Symbol not previously defined (PORTD)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00029     movwf   PORTD
+                      00030 
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00031 _duty_done_:
+                      00032     ;Period checking
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00033     movlw   .100                ;100us * 100 = 10ms
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00034     banksel free_counter
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00035     xorwf   free_counter, w
+Error[113]  : Symbol not previously defined (STATUS)
+Error[113]  : Symbol not previously defined (Z)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00036     btfss   STATUS, Z
+Error[151]  : Operand contains unresolvable labels or is too complex
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00037     goto    _period_done_
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00038     movlw   0xFF
+Error[113]  : Symbol not previously defined (PORTD)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00039     banksel PORTD
+Error[113]  : Symbol not previously defined (PORTD)
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:16         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00040     movwf   PORTD
+                      00041 
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00042     banksel free_counter
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00043     clrf    free_counter
+                      00044 
+Error[150]  : Labels must be defined in a code or data section when making an object file
+0000                  00045 _period_done_:
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00046     banksel free_counter
+Error[113]  : Symbol not previously defined (free_counter)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00047     incf    free_counter, f
+                      00048 
+Error[113]  : Symbol not previously defined (INTCON)
+Error[152]  : Executable code and data must be defined in an appropriate section
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00049     banksel INTCON
+Error[113]  : Symbol not previously defined (INTCON)
+Error[113]  : Symbol not previously defined (TMR0IF)
+Error[152]  : Executable code and data must be defined in an appropriate section
+0000                  00050     bcf     INTCON, TMR0IF
+                      00051 
+                      00052 
+Error[129]  : Expected (END)
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:16         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+__16F877A                         00000001
+_duty_done_                       00000000
+_duty_start_                      00000000
+_period_done_                     00000000
+
+Errors   :    86
+Warnings :     0 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

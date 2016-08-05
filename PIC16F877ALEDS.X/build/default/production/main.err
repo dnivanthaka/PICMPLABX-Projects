@@ -1,0 +1,8 @@
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 52 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 53 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 54 : Found directive in column 1. (extern)
+Warning[203] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 257 : Found opcode in column 1. (goto)
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 275 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 280 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 283 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ALEDS.X/main.asm 287 : Register in operand not in bank 0.  Ensure that bank bits are correct.

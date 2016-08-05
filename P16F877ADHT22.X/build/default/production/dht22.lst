@@ -1,0 +1,740 @@
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 #include    <p16f877a.inc>  ; processor specific variable definitions
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : May 28 2014
+                      00005 ;  MPASM PIC16F877A processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00567         LIST
+                      00002 #include    "macros.inc"
+                      00001 ;************* Macros ****************
+                      00002 BANK0 MACRO
+                      00003     bcf STATUS, RP0
+                      00004     bcf STATUS, RP1
+                      00005     ENDM
+                      00006 
+                      00007 BANK1 MACRO
+                      00008     bsf STATUS, RP0
+                      00009     bcf STATUS, RP1
+                      00010     ENDM
+                      00011 
+                      00012 BANK2 MACRO
+                      00013     bcf STATUS, RP0
+                      00014     bsf STATUS, RP1
+                      00015     ENDM
+                      00016 
+                      00017 BANK3 MACRO
+                      00018     bsf STATUS, RP0
+                      00019     bsf STATUS, RP1
+                      00020     ENDM
+                      00021 ;*************************************
+                      00003 
+                      00004 
+Warning[205]: Found directive in column 1. (global)
+  0000                00005 global dht22_init
+Warning[205]: Found directive in column 1. (global)
+  0000                00006 global dht22_start
+Warning[205]: Found directive in column 1. (global)
+  0000                00007 global dht22_rbyte
+                      00008 ;extern BANK0
+                      00009 ;extern BANK1
+                      00010 ;extern BANK2
+                      00011 ;extern BANK3
+                      00012 
+                      00013 DHT22Hi MACRO
+                      00014     BANK0
+                      00015     bcf PORTB, RB4
+                      00016     BANK1
+                      00017     bsf TRISB, RB4
+                      00018     BANK0
+                      00019     ENDM
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00020 
+                      00021 DHT22Lo MACRO
+                      00022     BANK0
+                      00023     bcf PORTB, RB4
+                      00024     BANK1
+                      00025     bcf TRISB, RB4
+                      00026     BANK0
+                      00027     ENDM
+                      00028 
+                      00029 
+Warning[205]: Found directive in column 1. (UDATA)
+                      00030 UDATA
+0000                  00031 dht22_buffer  RES 8                   ; Buffer for transactions
+0008                  00032 dht22_temp    RES 2
+000A                  00033 dht22_count   RES 1
+                      00034 
+                      00035 
+Warning[205]: Found directive in column 1. (CODE)
+                      00036 CODE
+                      00037 
+0000                  00038 dht22_delay10us
+Warning[203]: Found opcode in column 1. (movlw)
+0000   3008           00039 movlw   .8                ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+0001   ???? ????      00040 banksel dht22_temp        ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0003   00??           00041 movwf   dht22_temp        ;200ns
+                      00042 
+0004                  00043 dht22_d_loop2
+0004   0000           00044     nop                   ;200ns
+0005   ???? ????      00045     banksel dht22_temp    ;200ns
+0007   0B??           00046     decfsz  dht22_temp, f ;200ns/400ns
+0008   2???           00047     goto    dht22_d_loop2 ;400ns
+                      00048 
+0009   0008           00049     return                ;400ns
+                      00050 
+000A                  00051 dht22_delay20us
+Warning[203]: Found opcode in column 1. (movlw)
+000A   3014           00052 movlw   .20               ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+000B   ???? ????      00053 banksel dht22_temp        ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+000D   00??           00054 movwf   dht22_temp        ;200ns
+                      00055 
+000E                  00056 dht22_d_loop
+000E   0000           00057     nop                   ;200ns
+000F   ???? ????      00058     banksel dht22_temp    ;200ns
+0011   0B??           00059     decfsz  dht22_temp, f ;200ns/400ns
+0012   2???           00060     goto    dht22_d_loop  ;400ns
+                      00061 
+0013   0008           00062     return                ;400ns
+                      00063 
+0014                  00064 dht22_delay512us
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (movlw)
+0014   30FF           00065 movlw   .255              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+0015   ???? ????      00066 banksel dht22_temp        ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0017   00??           00067 movwf   dht22_temp        ;200ns
+                      00068 
+0018                  00069 dht22_d_loop3
+0018   0000           00070     nop                   ;200ns
+0019   0000           00071     nop                   ;200ns
+001A   0000           00072     nop                   ;200ns
+001B   0000           00073     nop                   ;200ns
+001C   0000           00074     nop                   ;200ns
+001D   0000           00075     nop                   ;200ns
+001E   ???? ????      00076     banksel dht22_temp    ;200ns
+0020   0B??           00077     decfsz  dht22_temp, f ;200ns/400ns
+0021   2???           00078     goto    dht22_d_loop3 ;400ns
+                      00079 
+0022   0008           00080     return                ;400ns
+                      00081 
+                      00082 
+0023                  00083 dht22_delay1ms
+0023   ???? ????      00084     pagesel dht22_delay512us
+0025   2???           00085     call    dht22_delay512us
+0026   ???? ????      00086     pagesel dht22_delay512us
+0028   2???           00087     call    dht22_delay512us
+0029   0008           00088     return
+                      00089 
+                      00090 
+002A                  00091 dht22_delay1s
+Warning[203]: Found opcode in column 1. (movlw)
+002A   30FF           00092 movlw   .255              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+002B   ???? ????      00093 banksel dht22_temp        ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+002D   00??           00094 movwf   dht22_temp+1      ;200ns
+                      00095 
+002E                  00096 dht22_d_loop4
+002E   ???? ????      00097     pagesel dht22_delay1ms
+0030   2???           00098     call    dht22_delay1ms
+0031   ???? ????      00099     pagesel dht22_delay1ms
+0033   2???           00100     call    dht22_delay1ms
+0034   ???? ????      00101     pagesel dht22_delay1ms
+0036   2???           00102     call    dht22_delay1ms
+0037   ???? ????      00103     pagesel dht22_delay1ms
+0039   2???           00104     call    dht22_delay1ms
+003A   ???? ????      00105     banksel dht22_temp    ;200ns
+003C   0B??           00106     decfsz  dht22_temp+1, f ;200ns/400ns
+003D   2???           00107     goto    dht22_d_loop4  ;400ns
+                      00108 
+003E   0008           00109     return                ;400ns
+                      00110 
+                      00111 ;====================================================
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+003F                  00112 dht22_init
+                      00113     ; Pulling up
+                      00114     BANK0
+003F   1283               M     bcf STATUS, RP0
+0040   1303               M     bcf STATUS, RP1
+0041   1206           00115     bcf PORTB, RB4
+                      00116     BANK1
+0042   1683               M     bsf STATUS, RP0
+0043   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0044   1606           00117     bsf TRISB, RB4
+                      00118     BANK0
+0045   1283               M     bcf STATUS, RP0
+0046   1303               M     bcf STATUS, RP1
+                      00119     
+0047   ???? ????      00120     pagesel dht22_delay1s
+0049   2???           00121     call    dht22_delay1s
+004A   0008           00122     return
+                      00123 ;===================================================
+004B                  00124 dht22_start
+                      00125     ; Pulling down
+                      00126     DHT22Lo
+                          M     BANK0
+004B   1283               M     bcf STATUS, RP0
+004C   1303               M     bcf STATUS, RP1
+004D   1206               M     bcf PORTB, RB4
+                          M     BANK1
+004E   1683               M     bsf STATUS, RP0
+004F   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0050   1206               M     bcf TRISB, RB4
+                          M     BANK0
+0051   1283               M     bcf STATUS, RP0
+0052   1303               M     bcf STATUS, RP1
+                      00127 
+0053   ???? ????      00128     pagesel dht22_delay512us
+0055   2???           00129     call    dht22_delay512us
+                      00130     ;pagesel dht22_delay1ms
+                      00131     ;call    dht22_delay1ms
+                      00132     ;pagesel dht22_delay1ms
+                      00133     ;call    dht22_delay1ms
+                      00134     ;pagesel dht22_delay1ms
+                      00135     ;call    dht22_delay1ms
+                      00136 
+                      00137 
+                      00138     ; Pulling up
+                      00139     DHT22Hi
+                          M     BANK0
+0056   1283               M     bcf STATUS, RP0
+0057   1303               M     bcf STATUS, RP1
+0058   1206               M     bcf PORTB, RB4
+                          M     BANK1
+0059   1683               M     bsf STATUS, RP0
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+005A   1303               M     bcf STATUS, RP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+005B   1606               M     bsf TRISB, RB4
+                          M     BANK0
+005C   1283               M     bcf STATUS, RP0
+005D   1303               M     bcf STATUS, RP1
+                      00140 
+005E   ???? ????      00141     pagesel dht22_delay20us
+0060   2???           00142     call    dht22_delay20us
+                      00143 
+                      00144     ; Wait till the sensor pulls down
+0061   1283 1303      00145     banksel PORTB
+0063   1A06           00146     btfsc   PORTB, RB4
+0064   2???           00147     goto    $-1
+                      00148 
+                      00149     ; Wait till the sensor pulls up
+0065   1283 1303      00150     banksel PORTB
+0067   1E06           00151     btfss   PORTB, RB4
+0068   2???           00152     goto    $-1
+                      00153 
+0069   0008           00154     return
+                      00155 ;===================================================
+006A                  00156 dht22_rbyte
+006A   ???? ????      00157     banksel dht22_buffer
+006C   01??           00158     clrf    dht22_buffer
+                      00159 
+006D   3008           00160     movlw   .8
+006E   ???? ????      00161     banksel dht22_count
+0070   00??           00162     movwf   dht22_count
+                      00163 
+0071                  00164 rx_loop:
+0071   1003           00165     bcf     STATUS, C
+                      00166     ; Wait till the sensor pulls down
+0072   1283 1303      00167     banksel PORTB
+0074   1A06           00168     btfsc   PORTB, RB4
+0075   2???           00169     goto    $-1
+                      00170 
+                      00171     ; Wait till the sensor up
+0076   1283 1303      00172     banksel PORTB
+0078   1E06           00173     btfss   PORTB, RB4
+0079   2???           00174     goto    $-1
+                      00175 
+007A   ???? ????      00176     pagesel dht22_delay20us
+007C   2???           00177     call    dht22_delay20us
+007D   ???? ????      00178     pagesel dht22_delay20us
+007F   2???           00179     call    dht22_delay20us
+0080   ???? ????      00180     pagesel dht22_delay10us
+0082   2???           00181     call    dht22_delay10us
+                      00182 
+0083   1283 1303      00183     banksel PORTB
+0085   1E06           00184     btfss   PORTB, RB4
+0086   1403           00185     bsf     STATUS, C
+                      00186 
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0087   ???? ????      00187     banksel dht22_buffer
+0089   0D??           00188     rlf     dht22_buffer, f
+                      00189 
+008A   ???? ????      00190     banksel dht22_count
+008C   0B??           00191     decfsz  dht22_count, f
+008D   2???           00192     goto    rx_loop
+                      00193 
+008E   ???? ????      00194     banksel dht22_buffer
+0090   08??           00195     movf    dht22_buffer, w
+                      00196 
+0091   0008           00197     return
+Warning[205]: Found directive in column 1. (END)
+                      00198 END
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ACKDT                             00000005
+ACKEN                             00000004
+ACKSTAT                           00000006
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000006
+ADCS1                             00000007
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+BANK0                             
+BANK1                             
+BANK2                             
+BANK3                             
+BCLIE                             00000003
+BCLIF                             00000003
+BF                                00000000
+BRGH                              00000002
+C                                 00000000
+C1INV                             00000004
+C1OUT                             00000006
+C2INV                             00000005
+C2OUT                             00000007
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCP1X                             00000005
+CCP1Y                             00000004
+CCP2CON                           0000001D
+CCP2IE                            00000000
+CCP2IF                            00000000
+CCP2M0                            00000000
+CCP2M1                            00000001
+CCP2M2                            00000002
+CCP2M3                            00000003
+CCP2X                             00000005
+CCP2Y                             00000004
+CCPR1                             00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CCPR2                             0000001B
+CCPR2H                            0000001C
+CCPR2L                            0000001B
+CHS0                              00000003
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+CHS1                              00000004
+CHS2                              00000005
+CIS                               00000003
+CKE                               00000006
+CKP                               00000004
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             0000009C
+CMIE                              00000006
+CMIF                              00000006
+CREN                              00000004
+CSRC                              00000007
+CVR0                              00000000
+CVR1                              00000001
+CVR2                              00000002
+CVR3                              00000003
+CVRCON                            0000009D
+CVREN                             00000007
+CVROE                             00000006
+CVRR                              00000005
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DHT22Hi                           
+DHT22Lo                           
+D_A                               00000005
+D_NOT_A                           00000005
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FSR                               00000004
+GCEN                              00000007
+GIE                               00000007
+GO                                00000002
+GO_DONE                           00000002
+GO_NOT_DONE                       00000002
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+IBF                               00000007
+IBOV                              00000005
+INDF                              00000000
+INTCON                            0000000B
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IRP                               00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BO                            00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000002
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RBPU                          00000007
+NOT_RC8                           00000006
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_TX8                           00000006
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OBF                               00000006
+OERR                              00000001
+OPTION_REG                        00000081
+P                                 00000004
+PCFG0                             00000000
+PCFG1                             00000001
+PCFG2                             00000002
+PCFG3                             00000003
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PEN                               00000002
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+PORTD                             00000008
+PORTE                             00000009
+PR2                               00000092
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSPIE                             00000007
+PSPIF                             00000007
+PSPMODE                           00000004
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+RA4                               00000004
+RA5                               00000005
+RB0                               00000000
+RB1                               00000001
+RB2                               00000002
+RB3                               00000003
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RBIE                              00000003
+RBIF                              00000000
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RC8_9                             00000006
+RC9                               00000006
+RCD8                              00000000
+RCEN                              00000003
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+RD0                               00000000
+RD1                               00000001
+RD2                               00000002
+RD3                               00000003
+RD4                               00000004
+RD5                               00000005
+RD6                               00000006
+RD7                               00000007
+RE0                               00000000
+RE1                               00000001
+RE2                               00000002
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RSEN                              00000001
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SEN                               00000000
+SMP                               00000007
+SPBRG                             00000099
+SPEN                              00000007
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE 11
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPCON2                           00000091
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1INSYNC                          00000002
+T1OSCEN                           00000003
+T1SYNC                            00000002
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE 12
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+TRISA5                            00000005
+TRISB                             00000086
+TRISB0                            00000000
+TRISB1                            00000001
+TRISB2                            00000002
+TRISB3                            00000003
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRISD                             00000088
+TRISD0                            00000000
+TRISD1                            00000001
+TRISD2                            00000002
+TRISD3                            00000003
+TRISD4                            00000004
+TRISD5                            00000005
+TRISD6                            00000006
+TRISD7                            00000007
+TRISE                             00000089
+TRISE0                            00000000
+TRISE1                            00000001
+TRISE2                            00000002
+TRMT                              00000001
+TX8_9                             00000006
+TX9                               00000006
+TX9D                              00000000
+TXD8                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+W                                 00000000
+WCOL                              00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+Z                                 00000002
+_.code_0064                       00000064
+_.code_0068                       00000068
+_.code_0075                       00000075
+_.code_0079                       00000079
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE 13
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_ALL                           00001FFF
+_CP_OFF                           00003FFF
+_CP_ON                            00001FFF
+_DEBUG_OFF                        00003FFF
+_DEBUG_ON                         000037FF
+_DEVID1                           00002006
+_FOSC_EXTRC                       00003FFF
+_FOSC_HS                          00003FFE
+_FOSC_LP                          00003FFC
+_FOSC_XT                          00003FFD
+_HS_OSC                           00003FFE
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_LP_OSC                           00003FFC
+_LVP_OFF                          00003F7F
+_LVP_ON                           00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FF7
+_RC_OSC                           00003FFF
+_WDTE_OFF                         00003FFB
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FFB
+_WDT_ON                           00003FFF
+_WRT_1FOURTH                      00003BFF
+_WRT_256                          00003DFF
+_WRT_HALF                         000039FF
+_WRT_OFF                          00003FFF
+_XT_OSC                           00003FFD
+__16F877A                         00000001
+dht22_buffer                      00000000
+dht22_count                       0000000A
+dht22_d_loop                      0000000E
+dht22_d_loop2                     00000004
+dht22_d_loop3                     00000018
+dht22_d_loop4                     0000002E
+dht22_delay10us                   00000000
+dht22_delay1ms                    00000023
+dht22_delay1s                     0000002A
+dht22_delay20us                   0000000A
+dht22_delay512us                  00000014
+dht22_init                        0000003F
+dht22_rbyte                       0000006A
+dht22_start                       0000004B
+dht22_temp                        00000008
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/P16   12-25-2014  15:04:57         PAGE 14
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+rx_loop                           00000071
+
+Errors   :     0
+Warnings :    18 reported,     0 suppressed
+Messages :     3 reported,     0 suppressed
+
+

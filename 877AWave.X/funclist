@@ -1,0 +1,6 @@
+_init: CODE, 1947 0 10
+_main: CODE, 2009 0 35
+__initialization: CODE, 2044 0 0
+_delay_ms: CODE, 1957 0 25
+_init_pwm: CODE, 1982 0 27
+Total: 97

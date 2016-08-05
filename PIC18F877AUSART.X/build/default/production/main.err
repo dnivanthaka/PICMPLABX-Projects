@@ -1,0 +1,7 @@
+Message[302] /home/dinusha/MPLABXProjects/PIC18F877AUSART.X/main.asm 172 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC18F877AUSART.X/main.asm 176 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC18F877AUSART.X/main.asm 180 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC18F877AUSART.X/main.asm 193 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC18F877AUSART.X/main.asm 194 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC18F877AUSART.X/main.asm 204 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC18F877AUSART.X/main.asm 208 : Register in operand not in bank 0.  Ensure that bank bits are correct.

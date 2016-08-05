@@ -1,0 +1,173 @@
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:36         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[205]: Found directive in column 1. (global)
+  0000                00001 global delay500us
+Warning[205]: Found directive in column 1. (global)
+  0000                00002 global delay250ms
+Warning[205]: Found directive in column 1. (global)
+  0000                00003 global delayms
+                      00004 ;global ds18b20_start
+                      00005 
+                      00006 
+                      00007 
+Warning[205]: Found directive in column 1. (UDATA)
+                      00008 UDATA
+0000                  00009 delay_temp    RES 1
+0001                  00010 delay_temp2   RES 1
+                      00011 
+                      00012 
+Warning[205]: Found directive in column 1. (CODE)
+                      00013 CODE
+                      00014 ;====================================================
+0000                  00015 delay500us
+Warning[203]: Found opcode in column 1. (movlw)
+0000   30FA           00016 movlw   .250              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+0001   ???? ????      00017 banksel delay_temp        ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0003   00??           00018 movwf   delay_temp        ;200ns
+                      00019 
+0004                  00020 delay_loop1
+0004   0000           00021     nop                   ;200ns
+0005   0000           00022     nop                   ;200ns
+0006   0000           00023     nop                   ;200ns
+0007   0000           00024     nop                   ;200ns
+0008   0000           00025     nop                   ;200ns
+0009   0000           00026     nop                   ;200ns
+000A   ???? ????      00027     banksel delay_temp    ;200ns
+000C   0B??           00028     decfsz  delay_temp, f ;200ns/400ns
+000D   2???           00029     goto    delay_loop1   ;400ns
+                      00030 
+000E   0008           00031     return                ;400ns
+                      00032 ;====================================================
+                      00033 ;====================================================
+000F                  00034 delay250ms
+Warning[203]: Found opcode in column 1. (movlw)
+000F   30FA           00035 movlw   .250              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+0010   ???? ????      00036 banksel delay_temp2      ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0012   00??           00037 movwf   delay_temp2      ;200ns
+                      00038 
+0013                  00039 delay_loop12:
+Warning[203]: Found opcode in column 1. (movlw)
+0013   30FF           00040 movlw   .255              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:36         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0014   ???? ????      00041 banksel delay_temp        ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+0016   00??           00042 movwf   delay_temp        ;200ns
+0017                  00043 delay_loop11:
+0017   2???           00044     goto $+1              ;400ns
+0018   2???           00045     goto $+1              ;400ns
+0019   2???           00046     goto $+1              ;400ns
+001A   2???           00047     goto $+1              ;400ns
+001B   2???           00048     goto $+1              ;400ns
+001C   2???           00049     goto $+1              ;400ns
+001D   2???           00050     goto $+1              ;400ns
+001E   2???           00051     goto $+1              ;400ns
+001F   ???? ????      00052     banksel delay_temp    ;200ns
+0021   0B??           00053     decfsz  delay_temp, f ;200ns/400ns
+0022   2???           00054     goto    delay_loop11  ;400ns
+Warning[205]: Found directive in column 1. (banksel)
+0023   ???? ????      00055 banksel delay_temp2    ;200ns
+Warning[203]: Found opcode in column 1. (decfsz)
+0025   0B??           00056 decfsz  delay_temp2, f ;200ns/400ns
+Warning[203]: Found opcode in column 1. (goto)
+0026   2???           00057 goto    delay_loop12  ;400ns
+                      00058 
+0027   0008           00059     return                ;400ns
+                      00060 ;====================================================
+                      00061 ;====================================================
+0028                  00062 delayms
+                      00063 ;movlw   .250              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+0028   ???? ????      00064 banksel delay_temp2      ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+002A   00??           00065 movwf   delay_temp2      ;200ns
+                      00066 
+002B                  00067 delay_loop13:
+Warning[203]: Found opcode in column 1. (movlw)
+002B   30FF           00068 movlw   .255              ;200ns
+Warning[205]: Found directive in column 1. (banksel)
+002C   ???? ????      00069 banksel delay_temp        ;200ns
+Warning[203]: Found opcode in column 1. (movwf)
+002E   00??           00070 movwf   delay_temp        ;200ns
+002F                  00071 delay_loop14:
+002F   2???           00072     goto $+1              ;400ns
+0030   2???           00073     goto $+1              ;400ns
+0031   2???           00074     goto $+1              ;400ns
+0032   2???           00075     goto $+1              ;400ns
+0033   2???           00076     goto $+1              ;400ns
+0034   2???           00077     goto $+1              ;400ns
+0035   2???           00078     goto $+1              ;400ns
+0036   2???           00079     goto $+1              ;400ns
+0037   ???? ????      00080     banksel delay_temp    ;200ns
+0039   0B??           00081     decfsz  delay_temp, f ;200ns/400ns
+003A   2???           00082     goto    delay_loop14  ;400ns
+Warning[205]: Found directive in column 1. (banksel)
+003B   ???? ????      00083 banksel delay_temp2    ;200ns
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:36         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+Warning[203]: Found opcode in column 1. (decfsz)
+003D   0B??           00084 decfsz  delay_temp2, f ;200ns/400ns
+Warning[203]: Found opcode in column 1. (goto)
+003E   2???           00085 goto    delay_loop13  ;400ns
+                      00086 
+003F   0008           00087     return                ;400ns
+                      00088 ;====================================================
+                      00089 
+Warning[205]: Found directive in column 1. (END)
+                      00090 END
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   12-28-2014  12:28:36         PAGE  4
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_.code_0017                       00000017
+_.code_0018                       00000018
+_.code_0019                       00000019
+_.code_001A                       0000001A
+_.code_001B                       0000001B
+_.code_001C                       0000001C
+_.code_001D                       0000001D
+_.code_001E                       0000001E
+_.code_002F                       0000002F
+_.code_0030                       00000030
+_.code_0031                       00000031
+_.code_0032                       00000032
+_.code_0033                       00000033
+_.code_0034                       00000034
+_.code_0035                       00000035
+_.code_0036                       00000036
+__16F877A                         00000001
+delay250ms                        0000000F
+delay500us                        00000000
+delay_loop1                       00000004
+delay_loop11                      00000017
+delay_loop12                      00000013
+delay_loop13                      0000002B
+delay_loop14                      0000002F
+delay_temp                        00000000
+delay_temp2                       00000001
+delayms                           00000028
+
+Errors   :     0
+Warnings :    26 reported,     0 suppressed
+Messages :     0 reported,     0 suppressed
+
+

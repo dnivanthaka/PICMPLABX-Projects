@@ -1,0 +1,23 @@
+_BLOCK_WIDTH: MEDIUMCONST, 32286 0 1
+___awdiv: CODE, 31634 0 164
+_pcd8544_draw_bytes: CODE, 31506 0 128
+_pic_init: CODE, 30836 0 30
+_OpenSPI: CODE, 31238 0 86
+_Font5x7: MEDIUMCONST, 32287 0 480
+_putch: CODE, 31094 0 70
+_obj_move: CODE, 32018 0 266
+_obj_init: CODE, 31412 0 94
+_obj_draw: CODE, 31164 0 74
+_main: CODE, 31798 0 220
+_obj_delete: CODE, 31324 0 88
+_pcd8544_init: CODE, 30982 0 42
+_pcd8544_reset: CODE, 30904 0 38
+_pcd8544_sendbyte: CODE, 30768 0 14
+__initialization: CODE, 30942 0 30
+_pcd8544_update: CODE, 31024 0 70
+_BLOCK_HEIGHT: MEDIUMCONST, 32285 0 1
+_pcd8544_command: CODE, 30796 0 16
+___wmul: CODE, 30866 0 38
+_WriteSPI: CODE, 30812 0 24
+_pcd8544_resetxy: CODE, 30782 0 14
+Total: 1988

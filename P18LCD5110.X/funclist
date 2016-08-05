@@ -1,0 +1,15 @@
+___awdiv: CODE, 32604 0 164
+_pic_init: CODE, 32050 0 26
+_OpenSPI: CODE, 32338 0 86
+_main: CODE, 32424 0 86
+_pcd8544_init: CODE, 32152 0 42
+_pcd8544_reset: CODE, 32076 0 38
+_pcd8544_sendbyte: CODE, 31982 0 14
+_pcd8544_putpixel: CODE, 32510 0 94
+__initialization: CODE, 32264 0 64
+_pcd8544_update: CODE, 32194 0 70
+_pcd8544_command: CODE, 32010 0 16
+___wmul: CODE, 32114 0 38
+_WriteSPI: CODE, 32026 0 24
+_pcd8544_resetxy: CODE, 31996 0 14
+Total: 776

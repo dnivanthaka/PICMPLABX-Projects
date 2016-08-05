@@ -1,0 +1,12 @@
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 46 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 47 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 48 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 50 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 51 : Found directive in column 1. (extern)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 52 : Found directive in column 1. (extern)
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 202 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 207 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 224 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 225 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 235 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/main.asm 239 : Register in operand not in bank 0.  Ensure that bank bits are correct.

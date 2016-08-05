@@ -1,0 +1,21 @@
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 5 : Found directive in column 1. (global)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 6 : Found directive in column 1. (global)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 7 : Found directive in column 1. (global)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 30 : Found directive in column 1. (UDATA)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 36 : Found directive in column 1. (CODE)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 39 : Found opcode in column 1. (movlw)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 40 : Found directive in column 1. (banksel)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 41 : Found opcode in column 1. (movwf)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 52 : Found opcode in column 1. (movlw)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 53 : Found directive in column 1. (banksel)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 54 : Found opcode in column 1. (movwf)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 65 : Found opcode in column 1. (movlw)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 66 : Found directive in column 1. (banksel)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 67 : Found opcode in column 1. (movwf)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 92 : Found opcode in column 1. (movlw)
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 93 : Found directive in column 1. (banksel)
+Warning[203] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 94 : Found opcode in column 1. (movwf)
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 117 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 25 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 17 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] /home/dinusha/MPLABXProjects/P16F877ADHT22.X/dht22.asm 198 : Found directive in column 1. (END)

@@ -1,0 +1,15 @@
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 5 : Found directive in column 1. (global)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 6 : Found directive in column 1. (global)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 7 : Found directive in column 1. (global)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 9 : Found directive in column 1. (UDATA)
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 15 : Found directive in column 1. (CODE)
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 39 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 40 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 42 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 43 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 46 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 48 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 50 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 66 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 105 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Warning[205] /home/dinusha/MPLABXProjects/PIC16F877ARPi.X/i2c_slave.asm 162 : Found directive in column 1. (END)

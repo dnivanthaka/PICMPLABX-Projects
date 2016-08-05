@@ -1,0 +1,1440 @@
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;**********************************************************************
+                      00002 ;   This file is a basic code template for object module code         *
+                      00003 ;   generation on the PIC16F690. This file contains the               *
+                      00004 ;   basic code building blocks to build upon.                         *
+                      00005 ;                                                                     *
+                      00006 ;   Refer to the MPASM User's Guide for additional information on     *
+                      00007 ;   features of the assembler and linker (Document DS33014).          *
+                      00008 ;                                                                     *
+                      00009 ;   Refer to the respective PIC data sheet for additional             *
+                      00010 ;   information on the instruction set.                               *
+                      00011 ;                                                                     *
+                      00012 ;**********************************************************************
+                      00013 ;                                                                     *
+                      00014 ;    Filename:      xxx.asm                                           *
+                      00015 ;    Date:                                                            *
+                      00016 ;    File Version:                                                    *
+                      00017 ;                                                                     *
+                      00018 ;    Author:                                                          *
+                      00019 ;    Company:                                                         *
+                      00020 ;                                                                     *
+                      00021 ;                                                                     *
+                      00022 ;**********************************************************************
+                      00023 ;                                                                     *
+                      00024 ;    Files required: P16F690.INC                                      *
+                      00025 ;                                                                     *
+                      00026 ;                                                                     *
+                      00027 ;                                                                     *
+                      00028 ;**********************************************************************
+                      00029 ;                                                                     *
+                      00030 ;    Notes:                                                           *
+                      00031 ;                                                                     *
+                      00032 ;                                                                     *
+                      00033 ;                                                                     *
+                      00034 ;                                                                     *
+                      00035 ;**********************************************************************
+                      00036 
+                      00037     list      p=16F690           ; list directive to define processor
+                      00038     #include <p16f690.inc>        ; processor specific variable definitions
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : May 28 2014
+                      00005 ;  MPASM PIC16F690 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2014 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00757         LIST
+                      00039 
+                      00040     errorlevel  -302              ; suppress message 302 from list file
+                      00041 
+2007   30E4           00042     __CONFIG   _CP_OFF & _CPD_OFF & _BOR_OFF & _MCLRE_ON & _WDT_OFF & _PWRTE_ON & _INTRC_OSC_NOCLKOUT & 
+                            _FCMEN_OFF & _IESO_OFF 
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00043 
+                      00044 ; '__CONFIG' directive is used to embed configuration word within .asm file.
+                      00045 ; The lables following the directive are located in the respective .inc file.
+                      00046 ; See data sheet for additional information on configuration word settings.
+                      00047 
+                      00048 ;Start
+                      00049 ;wait for SSPIF and clear it
+                      00050 ;Send Addresss
+                      00051 ;wait for SSPIF and clear it
+                      00052 ;loop while more bytes:
+                      00053 ;  Send a byte
+                      00054 ;  wait for SSPIF and clear it
+                      00055 ;Stop
+                      00056 
+                      00057 ;***** VARIABLE DEFINITIONS (examples)
+                      00058 ;SSPADD = ((Fosc/BitRate)/4)-1
+                      00059 ;SSPADD = ( 4MHz / 100KHz ) - 1
+                      00060 #define FOSC    D'8000000'
+                      00061 #define I2CCLOCK        D'100000'
+                      00062 ;#define BAUDRATE       0x06    ;100Khz
+                      00063 #define BAUDRATE        (((FOSC/I2CCLOCK)/4) -1)        ;100Khz
+                      00064 
+                      00065 #define SLAVE_ADDR      0x20
+                      00066 
+                      00067 ;**********************************************************************
+                      00068 ; PORT allocations
+                      00069 ;**********************************************************************
+                      00070 #define I2CTRIS TRISB
+                      00071 #define I2CPORT PORTB
+                      00072 #define SDA             RB4
+                      00073 #define SCL             RB6
+                      00074 ;**********************************************************************
+                      00075 ; Macro definitions
+                      00076 ;**********************************************************************
+                      00077 SDAHI   MACRO
+                      00078                 ;Setting SDA as input
+                      00079                 banksel I2CTRIS
+                      00080                 bsf             I2CTRIS, SDA
+                      00081         ;bcf            I2CTRIS, SDA
+                      00082 
+                      00083                 ;nop
+                      00084                 ;nop
+                      00085 
+                      00086                 ;Setting SDA pin low
+                      00087                 ;banksel        I2CPORT
+                      00088                 ;bsf            I2CPORT, SDA
+                      00089 
+                      00090                 ENDM
+                      00091 
+                      00092 SDALO   MACRO
+                      00093                 ;Setting SDA as output
+                      00094                 banksel I2CTRIS
+                      00095                 bcf             I2CTRIS, SDA
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00096 
+                      00097                 ;Setting SDA pin low
+                      00098                 ;banksel        I2CPORT
+                      00099                 ;bcf            I2CPORT, SDA
+                      00100                 ENDM
+                      00101 
+                      00102 SCLHI   MACRO
+                      00103                 ;Setting SDA as input
+                      00104                 banksel I2CTRIS
+                      00105                 bsf             I2CTRIS, SCL
+                      00106         ;bcf            I2CTRIS, SCL
+                      00107 
+                      00108                 ;nop
+                      00109                 ;nop
+                      00110 
+                      00111                 ;Setting SDA pin low
+                      00112                 ;banksel        I2CPORT
+                      00113                 ;bsf            I2CPORT, SCL
+                      00114                 ENDM
+                      00115 
+                      00116 SCLLO   MACRO
+                      00117                 ;Setting SDA as output
+                      00118                 banksel I2CTRIS
+                      00119                 bcf             I2CTRIS, SCL
+                      00120 
+                      00121                 ;Setting SDA pin low
+                      00122                 ;banksel        I2CPORT
+                      00123                 ;bcf            I2CPORT, SCL
+                      00124                 ENDM
+                      00125 ;**********************************************************************
+                      00126 
+                      00127 ; example of using Shared Uninitialized Data Section
+                      00128 INT_VAR     UDATA_SHR     
+0000                  00129 w_temp      RES     1       ; variable used for context saving 
+0001                  00130 status_temp RES     1       ; variable used for context saving
+0002                  00131 pclath_temp RES     1       ; variable used for context saving
+                      00132 
+Warning[205]: Found directive in column 1. (UDATA)
+                      00133 UDATA
+0000                  00134 temp                    RES     1
+0001                  00135 temp_data               RES     1
+0002                  00136 temp_address    RES     1
+0003                  00137 bit_counter             RES     1
+                      00138 
+                      00139 ;**********************************************************************
+                      00140 RESET_VECTOR    CODE    0x0000       ; processor reset vector
+0000   2???           00141         goto    start                ; go to beginning of program
+                      00142 
+                      00143 INT_VECTOR      CODE    0x0004       ; interrupt vector location
+                      00144 
+0004                  00145 INTERRUPT
+                      00146 
+0004   00??           00147         movwf   w_temp            ; save off current W register contents
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0005   0803           00148         movf    STATUS,w          ; move status register into W register
+0006   00??           00149         movwf   status_temp       ; save off contents of STATUS register
+0007   080A           00150         movf    PCLATH,w          ; move pclath register into W register
+0008   00??           00151         movwf   pclath_temp       ; save off contents of PCLATH register
+                      00152 
+                      00153 
+                      00154 
+                      00155 ; isr code can go here or be located as a call subroutine elsewhere
+                      00156 
+                      00157 
+0009   08??           00158         movf    pclath_temp,w     ; retrieve copy of PCLATH register
+000A   008A           00159         movwf   PCLATH            ; restore pre-isr PCLATH register contents
+000B   08??           00160         movf    status_temp,w     ; retrieve copy of STATUS register
+000C   0083           00161         movwf   STATUS            ; restore pre-isr STATUS register contents
+000D   0E??           00162         swapf   w_temp,f
+000E   0E??           00163         swapf   w_temp,w          ; restore pre-isr W register contents
+000F   0009           00164         retfie                    ; return from interrupt
+                      00165 
+                      00166 MAIN_PROG       CODE
+                      00167 
+0000                  00168 start
+0000   ????           00169                 pagesel init
+0001   2???           00170                 call    init
+                      00171 
+0002   ????           00172                 pagesel i2c_start
+0003   2???           00173                 call    i2c_start
+                      00174 
+                      00175                 ;pagesel        i2c_stop
+                      00176                 ;call   i2c_stop
+                      00177 
+0004   3020           00178                 movlw   SLAVE_ADDR
+0005   ????           00179                 pagesel i2c_sendwriteaddr
+0006   2???           00180                 call    i2c_sendwriteaddr
+                      00181 
+0007   3000           00182         movlw   0x00
+0008   ????           00183         pagesel i2c_sendbyte
+0009   2???           00184         call    i2c_sendbyte
+                      00185 
+000A   3000           00186         movlw   0x00
+000B   ????           00187         pagesel i2c_sendbyte
+000C   2???           00188         call    i2c_sendbyte
+                      00189 
+000D   ????           00190                 pagesel i2c_stop
+000E   2???           00191                 call    i2c_stop
+                      00192 
+                      00193 ;-------------------------------------
+                      00194 
+000F   ????           00195                 pagesel i2c_start
+0010   2???           00196                 call    i2c_start
+                      00197 
+                      00198                 ;pagesel        i2c_stop
+                      00199                 ;call   i2c_stop
+                      00200 
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0011   3020           00201                 movlw   SLAVE_ADDR
+0012   ????           00202                 pagesel i2c_sendwriteaddr
+0013   2???           00203                 call    i2c_sendwriteaddr
+                      00204 
+0014   3012           00205         movlw   0x12
+0015   ????           00206         pagesel i2c_sendbyte
+0016   2???           00207         call    i2c_sendbyte
+                      00208 
+0017   30FF           00209         movlw   0xFF
+0018   ????           00210         pagesel i2c_sendbyte
+0019   2???           00211         call    i2c_sendbyte
+                      00212 
+001A   ????           00213                 pagesel i2c_stop
+001B   2???           00214                 call    i2c_stop
+                      00215 
+                      00216                 ;movlw  SLAVE_ADDR
+                      00217                 ;banksel        temp_address
+                      00218                 ;movwf  temp_address
+                      00219 
+                      00220                 ;pagesel        i2c_sendwriteaddr
+                      00221                 ;call   i2c_sendwriteaddr
+                      00222                 ;pagesel        i2c_ackwait
+                      00223                 ;call   i2c_ackwait
+001C   3A00           00224                 xorlw   0x0
+001D   1D03           00225                 btfss   STATUS, Z
+001E   2???           00226                 goto    _skip_
+                      00227 
+001F   1283 1303      00228                 banksel PORTB
+0021   1686           00229                 bsf             PORTB, RB5
+0022                  00230 _skip_
+0022   ????           00231                 pagesel i2c_stop
+0023   2???           00232                 call    i2c_stop
+                      00233 
+                      00234                 ;pagesel        i2c_sendwriteaddr
+0024                  00235 loop
+                      00236 
+0024   2???           00237         goto    loop             ; loop forever
+                      00238 
+                      00239 ;------------------------------------------------------------
+                      00240 ; Initialization of Device
+                      00241 ;------------------------------------------------------------
+0025                  00242 init
+                      00243         ; Setting Oscillator
+0025   3070           00244         movlw b'01110000'
+                      00245                   ;--111----    ; 8Mhz Crystal
+                      00246                   ;-----0---    ; OSTS - Intrnal Oscillator
+                      00247                   ;------0--    ; HFINTOSC - High Frequency Oscillator
+                      00248                   ;-------0-    ; LFINTOSC - Low Freq. Oscillator
+                      00249                   ;---------1   ; Internal Oscillator is used for Clock
+0026   1683 1303      00250         banksel OSCCON
+0028   008F           00251         movwf   OSCCON
+                      00252 
+                      00253         ; Setting Ports
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0029   1283           00254         bcf     STATUS, RP0     ; Bank 0
+002A   1303           00255         bcf     STATUS, RP1
+                      00256 
+002B   0186           00257         clrf    PORTB
+                      00258 
+002C   1703           00259         bsf     STATUS, RP1     ; Bank 2
+                      00260 
+002D   019E           00261         clrf    ANSEL
+002E   019F           00262         clrf    ANSELH
+                      00263 
+002F   1683           00264         bsf     STATUS, RP0     ; Bank 1
+0030   1303           00265         bcf     STATUS, RP1
+                      00266 
+                      00267         ;movlw  b'01010000'
+                      00268         ;movwf  TRISB
+0031   3050           00269         movlw   b'01010000'
+                      00270         ;movlw  b'00000000'
+0032   0086           00271         movwf   TRISB
+                      00272 
+0033   1283           00273         bcf     STATUS, RP0     ; Bank 0
+                      00274 
+                      00275         ; Setting up I2C peripheral
+0034   1283 1303      00276         banksel SSPBUF
+0036   0193           00277         clrf    SSPBUF
+                      00278 
+                      00279         ; Setting baud rate
+0037   3013           00280         movlw   BAUDRATE
+0038   1683 1303      00281         banksel SSPADD
+003A   0093           00282         movwf   SSPADD
+                      00283 
+003B   1683 1303      00284         banksel SSPSTAT
+003D   1314           00285         bcf             SSPSTAT, 6
+003E   1394           00286         bcf             SSPSTAT, 7
+                      00287 
+                      00288         ; Mastermode, SSP Enable
+                      00289         ;movlw  b'00111000'
+003F   302B           00290         movlw   b'00101011'
+0040   1283 1303      00291         banksel SSPCON
+0042   0094           00292         movwf   SSPCON
+                      00293 
+                      00294         ; Enabling the SSPIF Flag
+0043   1283 1303      00295         banksel PIR1
+0045   118C           00296         bcf             PIR1, SSPIF
+                      00297         ;banksel        PIE1
+                      00298         ;bsf            PIE1, SSPIE
+                      00299         
+0046   0008           00300         return
+                      00301 ;------------------------------------------------------------
+                      00302 
+                      00303 ;------------------------------------------------------------
+                      00304 ; I2C Start
+                      00305 ;------------------------------------------------------------
+0047                  00306 i2c_start
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  7
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00307 
+                      00308         SCLHI
+                          M                 ;Setting SDA as input
+0047   1683 1303          M                 banksel I2CTRIS
+0049   1706               M                 bsf             I2CTRIS, SCL
+                          M         ;bcf            I2CTRIS, SCL
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SCL
+                      00309         SDAHI
+                          M                 ;Setting SDA as input
+004A   1683 1303          M                 banksel I2CTRIS
+004C   1606               M                 bsf             I2CTRIS, SDA
+                          M         ;bcf            I2CTRIS, SDA
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SDA
+                          M 
+                      00310 
+                      00311         SDALO
+                          M                 ;Setting SDA as output
+004D   1683 1303          M                 banksel I2CTRIS
+004F   1206               M                 bcf             I2CTRIS, SDA
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SDA
+                      00312 
+0050   ????           00313         pagesel i2c_delay
+0051   2???           00314         call    i2c_delay
+                      00315 
+                      00316         ; SCL is driven Low
+                      00317         SCLLO
+                          M                 ;Setting SDA as output
+0052   1683 1303          M                 banksel I2CTRIS
+0054   1306               M                 bcf             I2CTRIS, SCL
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SCL
+                      00318 
+                      00319         ;banksel        PIR1
+                      00320         ;btfss  PIR1, SSPIF
+                      00321         ;goto   $-1
+                      00322         ;bcf            PIR1, SSPIF
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  8
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00323 
+0055   0008           00324         return
+                      00325 ;------------------------------------------------------------
+                      00326 ;------------------------------------------------------------
+                      00327 ; I2C Restart
+                      00328 ;------------------------------------------------------------
+0056                  00329 i2c_restart
+                      00330 
+                      00331         SCLHI
+                          M                 ;Setting SDA as input
+0056   1683 1303          M                 banksel I2CTRIS
+0058   1706               M                 bsf             I2CTRIS, SCL
+                          M         ;bcf            I2CTRIS, SCL
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SCL
+                      00332         SDAHI
+                          M                 ;Setting SDA as input
+0059   1683 1303          M                 banksel I2CTRIS
+005B   1606               M                 bsf             I2CTRIS, SDA
+                          M         ;bcf            I2CTRIS, SDA
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SDA
+                          M 
+                      00333 
+005C   0000           00334     nop
+005D   0000           00335     nop
+                      00336         SCLLO
+                          M                 ;Setting SDA as output
+005E   1683 1303          M                 banksel I2CTRIS
+0060   1306               M                 bcf             I2CTRIS, SCL
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SCL
+0061   0000           00337     nop
+                      00338     SCLHI
+                          M                 ;Setting SDA as input
+0062   1683 1303          M                 banksel I2CTRIS
+0064   1706               M                 bsf             I2CTRIS, SCL
+                          M         ;bcf            I2CTRIS, SCL
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE  9
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SCL
+0065   0000           00339     nop
+0066   0000           00340     nop
+                      00341         SDALO
+                          M                 ;Setting SDA as output
+0067   1683 1303          M                 banksel I2CTRIS
+0069   1206               M                 bcf             I2CTRIS, SDA
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SDA
+                      00342         ; SCL is driven Low
+                      00343         SCLLO
+                          M                 ;Setting SDA as output
+006A   1683 1303          M                 banksel I2CTRIS
+006C   1306               M                 bcf             I2CTRIS, SCL
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SCL
+                      00344 
+006D   0008           00345         return
+                      00346 ;------------------------------------------------------------
+                      00347 
+                      00348 ;------------------------------------------------------------
+                      00349 ; I2C Stop
+                      00350 ;------------------------------------------------------------
+006E                  00351 i2c_stop
+                      00352         ;banksel        PORTB   
+                      00353         ;bcf            PORTB, RB4
+                      00354 
+                      00355         ;banksel        PORTB   
+                      00356         ;bcf            PORTB, RB6
+                      00357     SCLLO
+                          M                 ;Setting SDA as output
+006E   1683 1303          M                 banksel I2CTRIS
+0070   1306               M                 bcf             I2CTRIS, SCL
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SCL
+                      00358     SDALO
+                          M                 ;Setting SDA as output
+0071   1683 1303          M                 banksel I2CTRIS
+0073   1206               M                 bcf             I2CTRIS, SDA
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SDA
+                      00359 
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 10
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00360         SCLHI
+                          M                 ;Setting SDA as input
+0074   1683 1303          M                 banksel I2CTRIS
+0076   1706               M                 bsf             I2CTRIS, SCL
+                          M         ;bcf            I2CTRIS, SCL
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SCL
+                      00361 
+0077   ????           00362         pagesel i2c_delay
+0078   2???           00363         call    i2c_delay
+                      00364 
+                      00365         SDAHI
+                          M                 ;Setting SDA as input
+0079   1683 1303          M                 banksel I2CTRIS
+007B   1606               M                 bsf             I2CTRIS, SDA
+                          M         ;bcf            I2CTRIS, SDA
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SDA
+                          M 
+                      00366 
+                      00367         ;banksel        PIR1
+                      00368         ;btfss  PIR1, SSPIF
+                      00369         ;goto   $-1
+                      00370         ;bcf            PIR1, SSPIF
+                      00371 
+007C   0008           00372         return
+                      00373 ;------------------------------------------------------------
+                      00374 
+                      00375 ;------------------------------------------------------------
+                      00376 ; I2C send write address, returns zero when there is a device
+                      00377 ;------------------------------------------------------------
+007D                  00378 i2c_sendwriteaddr
+007D   ???? ????      00379         banksel temp_address
+007F   00??           00380         movwf   temp_address
+                      00381 
+0080   1003           00382         bcf             STATUS, C
+0081   0D??           00383         rlf             temp_address, w
+                      00384 
+0082   ????           00385         pagesel i2c_sendbyte
+0083   2???           00386         call    i2c_sendbyte
+                      00387 
+                      00388         ;pagesel        i2c_read_bit
+                      00389         ;call   i2c_read_bit
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 11
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00390 
+                      00391         ;pagesel        i2c_ackwait
+                      00392         ;call   i2c_ackwait
+                      00393         ;banksel        PIR1
+                      00394         ;btfss  PIR1, SSPIF
+                      00395         ;goto   $-1
+                      00396         ;bcf            PIR1, SSPIF
+                      00397 
+0084   0008           00398         return
+                      00399 ;------------------------------------------------------------
+                      00400 
+                      00401 ;------------------------------------------------------------
+                      00402 ; I2C send read address, returns zero when there is a device
+                      00403 ;------------------------------------------------------------
+0085                  00404 i2c_sendreadaddr
+0085   ???? ????      00405         banksel temp_address
+0087   00??           00406         movwf   temp_address
+                      00407 
+0088   1403           00408         bsf             STATUS, C
+0089   0D??           00409         rlf             temp_address, w
+                      00410 
+008A   ????           00411         pagesel i2c_sendbyte
+008B   2???           00412         call    i2c_sendbyte
+                      00413 
+                      00414         ;pagesel        i2c_read_bit
+                      00415         ;call   i2c_read_bit
+                      00416 
+                      00417         ;pagesel        i2c_ackwait
+                      00418         ;call   i2c_ackwait
+                      00419         ;banksel        PIR1
+                      00420         ;btfss  PIR1, SSPIF
+                      00421         ;goto   $-1
+                      00422         ;bcf            PIR1, SSPIF
+                      00423 
+008C   0008           00424         return
+                      00425 ;------------------------------------------------------------
+                      00426 ;------------------------------------------------------------
+                      00427 ; Write byte
+                      00428 ;------------------------------------------------------------
+                      00429 
+008D                  00430 i2c_sendbyte
+008D   ???? ????      00431         banksel temp_data
+008F   00??           00432         movwf   temp_data
+                      00433 
+0090   1003           00434         bcf             STATUS, C
+0091   ???? ????      00435         banksel temp_data
+0093   0D??           00436         rlf             temp_data, f
+                      00437 
+                      00438     ; Bit 1
+0094   ????           00439         pagesel i2c_send_bit
+0095   2???           00440         call    i2c_send_bit
+                      00441 
+0096   ???? ????      00442         banksel temp_data
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 12
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0098   0D??           00443         rlf             temp_data, f
+                      00444     ; Bit 2
+0099   ????           00445         pagesel i2c_send_bit
+009A   2???           00446         call    i2c_send_bit
+                      00447 
+009B   ???? ????      00448         banksel temp_data
+009D   0D??           00449         rlf             temp_data, f
+                      00450     ; Bit 3
+009E   ????           00451         pagesel i2c_send_bit
+009F   2???           00452         call    i2c_send_bit
+                      00453 
+00A0   ???? ????      00454         banksel temp_data
+00A2   0D??           00455         rlf             temp_data, f
+                      00456     ; Bit 4
+00A3   ????           00457         pagesel i2c_send_bit
+00A4   2???           00458         call    i2c_send_bit
+                      00459 
+00A5   ???? ????      00460         banksel temp_data
+00A7   0D??           00461         rlf             temp_data, f
+                      00462     ; Bit 5
+00A8   ????           00463         pagesel i2c_send_bit
+00A9   2???           00464         call    i2c_send_bit
+                      00465 
+00AA   ???? ????      00466         banksel temp_data
+00AC   0D??           00467         rlf             temp_data, f
+                      00468     ; Bit 6
+00AD   ????           00469         pagesel i2c_send_bit
+00AE   2???           00470         call    i2c_send_bit
+                      00471 
+00AF   ???? ????      00472         banksel temp_data
+00B1   0D??           00473         rlf             temp_data, f
+                      00474     ; Bit 7
+00B2   ????           00475         pagesel i2c_send_bit
+00B3   2???           00476         call    i2c_send_bit
+                      00477 
+00B4   ???? ????      00478         banksel temp_data
+00B6   0D??           00479         rlf             temp_data, f
+                      00480     ; Bit 8
+00B7   ????           00481         pagesel i2c_send_bit
+00B8   2???           00482         call    i2c_send_bit
+                      00483 
+00B9   0000           00484     nop
+00BA   0000           00485     nop
+                      00486 
+                      00487     ; Reading Acknowledgement
+00BB   ????           00488         pagesel i2c_read_bit
+00BC   2???           00489         call    i2c_read_bit
+                      00490 
+                      00491         ;pagesel        i2c_ackwait
+                      00492         ;call   i2c_ackwait
+                      00493         ;banksel        PIR1
+                      00494         ;btfss  PIR1, SSPIF
+                      00495         ;goto   $-1
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 13
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00496         ;bcf            PIR1, SSPIF
+                      00497 
+00BD   0008           00498         return
+                      00499 ;------------------------------------------------------------
+                      00500 ;------------------------------------------------------------
+                      00501 ; Write bit
+                      00502 ;------------------------------------------------------------
+00BE                  00503 i2c_send_bit
+                      00504 
+00BE   1C03           00505         btfss   STATUS, C
+00BF   2???           00506         goto    _zero_
+00C0   2???           00507         goto    _one_
+                      00508 
+00C1                  00509 _one_
+                      00510         SDAHI
+                          M                 ;Setting SDA as input
+00C1   1683 1303          M                 banksel I2CTRIS
+00C3   1606               M                 bsf             I2CTRIS, SDA
+                          M         ;bcf            I2CTRIS, SDA
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SDA
+                          M 
+00C4   2???           00511         goto    _done_
+                      00512 
+00C5                  00513 _zero_
+                      00514         SDALO
+                          M                 ;Setting SDA as output
+00C5   1683 1303          M                 banksel I2CTRIS
+00C7   1206               M                 bcf             I2CTRIS, SDA
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SDA
+                      00515 
+00C8                  00516 _done_
+                      00517         SCLHI
+                          M                 ;Setting SDA as input
+00C8   1683 1303          M                 banksel I2CTRIS
+00CA   1706               M                 bsf             I2CTRIS, SCL
+                          M         ;bcf            I2CTRIS, SCL
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SCL
+00CB   ????           00518         pagesel i2c_delay
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 14
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00CC   2???           00519         call    i2c_delay
+                      00520         SCLLO
+                          M                 ;Setting SDA as output
+00CD   1683 1303          M                 banksel I2CTRIS
+00CF   1306               M                 bcf             I2CTRIS, SCL
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SCL
+                      00521     SDALO
+                          M                 ;Setting SDA as output
+00D0   1683 1303          M                 banksel I2CTRIS
+00D2   1206               M                 bcf             I2CTRIS, SDA
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SDA
+                      00522 
+00D3   0008           00523         return
+                      00524 
+                      00525 
+                      00526 ;------------------------------------------------------------
+                      00527 ;------------------------------------------------------------
+                      00528 ; Read bit
+                      00529 ;------------------------------------------------------------
+00D4                  00530 i2c_read_bit
+                      00531         
+                      00532         SDAHI
+                          M                 ;Setting SDA as input
+00D4   1683 1303          M                 banksel I2CTRIS
+00D6   1606               M                 bsf             I2CTRIS, SDA
+                          M         ;bcf            I2CTRIS, SDA
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SDA
+                          M 
+                      00533     SCLHI
+                          M                 ;Setting SDA as input
+00D7   1683 1303          M                 banksel I2CTRIS
+00D9   1706               M                 bsf             I2CTRIS, SCL
+                          M         ;bcf            I2CTRIS, SCL
+                          M 
+                          M                 ;nop
+                          M                 ;nop
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bsf            I2CPORT, SCL
+                      00534 
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 15
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+00DA   ????           00535         pagesel i2c_delay
+00DB   2???           00536         call    i2c_delay
+                      00537         ;SCLLO
+                      00538 
+00DC   1283 1303      00539         banksel I2CPORT
+00DE   1E06           00540         btfss   I2CPORT, SDA
+00DF   2???           00541     goto    _read_zero_
+00E0   2???           00542     goto    _read_one_
+                      00543 
+00E1                  00544 _read_zero_
+                      00545     SCLLO
+                          M                 ;Setting SDA as output
+00E1   1683 1303          M                 banksel I2CTRIS
+00E3   1306               M                 bcf             I2CTRIS, SCL
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SCL
+00E4   3400           00546         retlw   0x0
+                      00547 
+00E5                  00548 _read_one_
+                      00549     SCLLO
+                          M                 ;Setting SDA as output
+00E5   1683 1303          M                 banksel I2CTRIS
+00E7   1306               M                 bcf             I2CTRIS, SCL
+                          M 
+                          M                 ;Setting SDA pin low
+                          M                 ;banksel        I2CPORT
+                          M                 ;bcf            I2CPORT, SCL
+00E8   3401           00550         retlw   0x1
+                      00551 
+00E9   0008           00552         return
+                      00553 
+                      00554 
+                      00555 ;------------------------------------------------------------
+                      00556 
+                      00557 ;------------------------------------------------------------
+                      00558 ; I2C Delay
+                      00559 ;------------------------------------------------------------
+00EA                  00560 i2c_delay
+                      00561     ;nop
+00EA   0000           00562     nop
+00EB   0000           00563     nop
+00EC   0000           00564     nop
+00ED   0008           00565         return
+                      00566 ;------------------------------------------------------------
+                      00567 ; initialize eeprom locations
+                      00568 
+                      00569 EE      CODE    0x2100
+2100   0000 0001 0002 00570         DE  0x00, 0x01, 0x02, 0x03
+       0003 
+                      00571 
+30E4                  00572         END                       ; directive 'end of program'
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 16
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ABDEN                             00000000
+ABDOVF                            00000007
+ADCON0                            0000001F
+ADCON1                            0000009F
+ADCS0                             00000004
+ADCS1                             00000005
+ADCS2                             00000006
+ADDEN                             00000003
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+ANS0                              00000000
+ANS1                              00000001
+ANS10                             00000002
+ANS11                             00000003
+ANS2                              00000002
+ANS3                              00000003
+ANS4                              00000004
+ANS5                              00000005
+ANS6                              00000006
+ANS7                              00000007
+ANS8                              00000000
+ANS9                              00000001
+ANSEL                             0000011E
+ANSELH                            0000011F
+BAUDCTL                           0000009B
+BAUDRATE                          (((FOSC/I2CCLOCK)/4) -1)
+BF                                00000000
+BRG0                              00000000
+BRG1                              00000001
+BRG10                             00000002
+BRG11                             00000003
+BRG12                             00000004
+BRG13                             00000005
+BRG14                             00000006
+BRG15                             00000007
+BRG16                             00000003
+BRG2                              00000002
+BRG3                              00000003
+BRG4                              00000004
+BRG5                              00000005
+BRG6                              00000006
+BRG7                              00000007
+BRG8                              00000000
+BRG9                              00000001
+BRGH                              00000002
+C                                 00000000
+C1CH0                             00000000
+C1CH1                             00000001
+C1IE                              00000005
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 17
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+C1IF                              00000005
+C1OE                              00000005
+C1ON                              00000007
+C1OUT                             00000006
+C1POL                             00000004
+C1R                               00000002
+C1SEN                             00000005
+C1VREN                            00000007
+C2CH0                             00000000
+C2CH1                             00000001
+C2IE                              00000006
+C2IF                              00000006
+C2OE                              00000005
+C2ON                              00000007
+C2OUT                             00000006
+C2POL                             00000004
+C2R                               00000002
+C2REN                             00000004
+C2SYNC                            00000000
+C2VREN                            00000006
+CCP1CON                           00000017
+CCP1IE                            00000002
+CCP1IF                            00000002
+CCP1M0                            00000000
+CCP1M1                            00000001
+CCP1M2                            00000002
+CCP1M3                            00000003
+CCPR                              00000015
+CCPR1H                            00000016
+CCPR1L                            00000015
+CHS0                              00000002
+CHS1                              00000003
+CHS2                              00000004
+CHS3                              00000005
+CKE                               00000006
+CKP                               00000004
+CM1CON0                           00000119
+CM2CON0                           0000011A
+CM2CON1                           0000011B
+CREN                              00000004
+CSRC                              00000007
+D                                 00000005
+DATA_ADDRESS                      00000005
+DC                                00000001
+DC1B0                             00000004
+DC1B1                             00000005
+D_A                               00000005
+D_NOT_A                           00000005
+ECCPAS                            0000001D
+ECCPAS0                           00000004
+ECCPAS1                           00000005
+ECCPAS2                           00000006
+ECCPASE                           00000007
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 18
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+EEADR                             0000010D
+EEADRH                            0000010F
+EECON1                            0000018C
+EECON2                            0000018D
+EEDAT                             0000010C
+EEDATA                            0000010C
+EEDATH                            0000010E
+EEIE                              00000004
+EEIF                              00000004
+EEPGD                             00000007
+F                                 00000001
+FERR                              00000002
+FOSC                              D'8000000'
+FSR                               00000004
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+HTS                               00000002
+I2CCLOCK                          D'100000'
+I2CPORT                           PORTB
+I2CTRIS                           TRISB
+I2C_DATA                          00000005
+I2C_READ                          00000002
+I2C_START                         00000003
+I2C_STOP                          00000004
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTERRUPT                         00000004
+INTF                              00000001
+IOC                               00000096
+IOC0                              00000000
+IOC1                              00000001
+IOC2                              00000002
+IOC3                              00000003
+IOC4                              00000004
+IOC5                              00000005
+IOCA                              00000096
+IOCA0                             00000000
+IOCA1                             00000001
+IOCA2                             00000002
+IOCA3                             00000003
+IOCA4                             00000004
+IOCA5                             00000005
+IOCB                              00000116
+IOCB4                             00000004
+IOCB5                             00000005
+IOCB6                             00000006
+IOCB7                             00000007
+IRCF0                             00000004
+IRCF1                             00000005
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 19
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+IRCF2                             00000006
+IRP                               00000007
+LTS                               00000001
+MC1OUT                            00000007
+MC2OUT                            00000006
+MSK                               00000093
+MSK0                              00000000
+MSK1                              00000001
+MSK2                              00000002
+MSK3                              00000003
+MSK4                              00000004
+MSK5                              00000005
+MSK6                              00000006
+MSK7                              00000007
+NOT_A                             00000005
+NOT_ADDRESS                       00000005
+NOT_BOR                           00000000
+NOT_DONE                          00000001
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_RABPU                         00000007
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+NOT_W                             00000002
+NOT_WRITE                         00000002
+OERR                              00000001
+OPTION_REG                        00000081
+OSCCON                            0000008F
+OSCTUNE                           00000090
+OSFIE                             00000007
+OSFIF                             00000007
+OSTS                              00000003
+P                                 00000004
+P1M0                              00000006
+P1M1                              00000007
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PDC0                              00000000
+PDC1                              00000001
+PDC2                              00000002
+PDC3                              00000003
+PDC4                              00000004
+PDC5                              00000005
+PDC6                              00000006
+PEIE                              00000006
+PIE1                              0000008C
+PIE2                              0000008D
+PIR1                              0000000C
+PIR2                              0000000D
+PORTA                             00000005
+PORTB                             00000006
+PORTC                             00000007
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 20
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+PR2                               00000092
+PRSEN                             00000007
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+PSSAC0                            00000002
+PSSAC1                            00000003
+PSSBD0                            00000000
+PSSBD1                            00000001
+PSTRCON                           0000019D
+PULSR                             00000002
+PULSS                             00000003
+PWM1CON                           0000001C
+R                                 00000002
+RA0                               00000000
+RA1                               00000001
+RA2                               00000002
+RA3                               00000003
+RA4                               00000004
+RA5                               00000005
+RABIE                             00000003
+RABIF                             00000000
+RB4                               00000004
+RB5                               00000005
+RB6                               00000006
+RB7                               00000007
+RC0                               00000000
+RC1                               00000001
+RC2                               00000002
+RC3                               00000003
+RC4                               00000004
+RC5                               00000005
+RC6                               00000006
+RC7                               00000007
+RCIDL                             00000006
+RCIE                              00000005
+RCIF                              00000005
+RCREG                             0000001A
+RCSTA                             00000018
+RD                                00000000
+READ_WRITE                        00000002
+RP0                               00000005
+RP1                               00000006
+RX9                               00000006
+RX9D                              00000000
+R_NOT_W                           00000002
+R_W                               00000002
+S                                 00000003
+SBOREN                            00000004
+SCKP                              00000004
+SCL                               RB6
+SCLHI                             
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 21
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+SCLLO                             
+SCS                               00000000
+SDA                               RB4
+SDAHI                             
+SDALO                             
+SENB                              00000003
+SENDB                             00000003
+SLAVE_ADDR                        0x20
+SMP                               00000007
+SPBRG                             00000099
+SPBRGH                            0000009A
+SPEN                              00000007
+SR0                               00000006
+SR1                               00000007
+SRCON                             0000019E
+SREN                              00000005
+SSPADD                            00000093
+SSPBUF                            00000013
+SSPCON                            00000014
+SSPEN                             00000005
+SSPIE                             00000003
+SSPIF                             00000003
+SSPM0                             00000000
+SSPM1                             00000001
+SSPM2                             00000002
+SSPM3                             00000003
+SSPMSK                            00000093
+SSPOV                             00000006
+SSPSTAT                           00000094
+STATUS                            00000003
+STRA                              00000000
+STRB                              00000001
+STRC                              00000002
+STRD                              00000003
+STRSYNC                           00000004
+SWDTEN                            00000000
+SYNC                              00000004
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1GINV                            00000007
+T1GSS                             00000001
+T1IE                              00000000
+T1IF                              00000000
+T1OSCEN                           00000003
+T2CKPS0                           00000000
+T2CKPS1                           00000001
+T2CON                             00000012
+T2IE                              00000001
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 22
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+T2IF                              00000001
+TMR0                              00000001
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TMR2                              00000011
+TMR2IE                            00000001
+TMR2IF                            00000001
+TMR2ON                            00000002
+TOUTPS0                           00000003
+TOUTPS1                           00000004
+TOUTPS2                           00000005
+TOUTPS3                           00000006
+TRISA                             00000085
+TRISA0                            00000000
+TRISA1                            00000001
+TRISA2                            00000002
+TRISA3                            00000003
+TRISA4                            00000004
+TRISA5                            00000005
+TRISB                             00000086
+TRISB4                            00000004
+TRISB5                            00000005
+TRISB6                            00000006
+TRISB7                            00000007
+TRISC                             00000087
+TRISC0                            00000000
+TRISC1                            00000001
+TRISC2                            00000002
+TRISC3                            00000003
+TRISC4                            00000004
+TRISC5                            00000005
+TRISC6                            00000006
+TRISC7                            00000007
+TRMT                              00000001
+TUN0                              00000000
+TUN1                              00000001
+TUN2                              00000002
+TUN3                              00000003
+TUN4                              00000004
+TX9                               00000006
+TX9D                              00000000
+TXEN                              00000005
+TXIE                              00000004
+TXIF                              00000004
+TXREG                             00000019
+TXSTA                             00000098
+UA                                00000001
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 23
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ULPWUE                            00000005
+VCFG                              00000006
+VP6EN                             00000004
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000118
+VRR                               00000005
+W                                 00000000
+WCOL                              00000007
+WDTCON                            00000097
+WDTPS0                            00000001
+WDTPS1                            00000002
+WDTPS2                            00000003
+WDTPS3                            00000004
+WPU                               00000095
+WPU0                              00000000
+WPU1                              00000001
+WPU2                              00000002
+WPU4                              00000004
+WPU5                              00000005
+WPUA                              00000095
+WPUA0                             00000000
+WPUA1                             00000001
+WPUA2                             00000002
+WPUA4                             00000004
+WPUA5                             00000005
+WPUB                              00000115
+WPUB4                             00000004
+WPUB5                             00000005
+WPUB6                             00000006
+WPUB7                             00000007
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+WUE                               00000001
+Z                                 00000002
+_BOD_NSLEEP                       00003EFF
+_BOD_OFF                          00003CFF
+_BOD_ON                           00003FFF
+_BOD_SBODEN                       00003DFF
+_BOREN_NSLEEP                     00003EFF
+_BOREN_OFF                        00003CFF
+_BOREN_ON                         00003FFF
+_BOREN_SBODEN                     00003DFF
+_BOR_NSLEEP                       00003EFF
+_BOR_OFF                          00003CFF
+_BOR_ON                           00003FFF
+_BOR_SBODEN                       00003DFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003F7F
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 24
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_CP_OFF                           00003FFF
+_CP_ON                            00003FBF
+_DEVID1                           00002006
+_EC_OSC                           00003FFB
+_EXTRC                            00003FFF
+_EXTRCIO                          00003FFE
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_FCMEN_OFF                        000037FF
+_FCMEN_ON                         00003FFF
+_FOSC_EC                          00003FFB
+_FOSC_EXTRCCLK                    00003FFF
+_FOSC_EXTRCIO                     00003FFE
+_FOSC_HS                          00003FFA
+_FOSC_INTRCCLK                    00003FFD
+_FOSC_INTRCIO                     00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_HS_OSC                           00003FFA
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_IESO_OFF                         00003BFF
+_IESO_ON                          00003FFF
+_INTOSC                           00003FFD
+_INTOSCIO                         00003FFC
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_WDTE_OFF                         00003FF7
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FF9
+__16F690                          00000001
+_done_                            000000C8
+_one_                             000000C1
+_read_one_                        000000E5
+_read_zero_                       000000E1
+_skip_                            00000022
+_zero_                            000000C5
+bit_counter                       00000003
+i2c_delay                         000000EA
+i2c_read_bit                      000000D4
+i2c_restart                       00000056
+i2c_send_bit                      000000BE
+i2c_sendbyte                      0000008D
+i2c_sendreadaddr                  00000085
+MPASM 5.57  /HOME/DINUSHA/MPLABXPROJECTS/PIC   8-21-2014  23:03:27         PAGE 25
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+i2c_sendwriteaddr                 0000007D
+i2c_start                         00000047
+i2c_stop                          0000006E
+init                              00000025
+loop                              00000024
+pclath_temp                       00000002
+start                             00000000
+status_temp                       00000001
+temp                              00000000
+temp_address                      00000002
+temp_data                         00000001
+w_temp                            00000000
+
+Errors   :     0
+Warnings :     1 reported,     0 suppressed
+Messages :     0 reported,    30 suppressed
+
+

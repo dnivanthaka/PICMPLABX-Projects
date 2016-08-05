@@ -1,0 +1,8 @@
+Message[312] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 109 : Page or Bank selection not needed for this device.  No code generated.
+Message[312] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 121 : Page or Bank selection not needed for this device.  No code generated.
+Message[302] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 143 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 192 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 196 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 201 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 209 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/ShakeColorP16F.X/MAIN.asm 239 : Register in operand not in bank 0.  Ensure that bank bits are correct.

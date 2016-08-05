@@ -1,0 +1,22 @@
+_SUD_UP: STRING, 12 0 1
+_i2c_send_data: CODE, 822 0 9
+_init: CODE, 851 0 13
+_i2c_start: CODE, 831 0 10
+__stringtab: STRING, 3 0 6
+_tea5767_init: CODE, 962 0 59
+_tea5767_write: CODE, 906 0 56
+___ftpack: CODE, 1123 0 104
+_STBY: STRING, 11 0 1
+_main: CODE, 816 0 6
+___ftadd: CODE, 1762 0 265
+_tea5767_getpll: CODE, 1021 0 102
+_i2c_send_controlbyte: CODE, 864 0 18
+_MUTE_ON: STRING, 9 0 1
+__initialization: CODE, 2027 0 17
+_i2c_stop: CODE, 841 0 10
+___ftmul: CODE, 1553 0 209
+_i2c_init: CODE, 882 0 24
+_SM_ON: STRING, 10 0 1
+___fttol: CODE, 1227 0 142
+___ftdiv: CODE, 1369 0 184
+Total: 1238

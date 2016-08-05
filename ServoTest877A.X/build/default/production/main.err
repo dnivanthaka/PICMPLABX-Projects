@@ -1,0 +1,3 @@
+Message[302] /home/dinusha/MPLABXProjects/ServoTest877A.X/main.asm 188 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/ServoTest877A.X/main.asm 192 : Register in operand not in bank 0.  Ensure that bank bits are correct.
+Message[302] /home/dinusha/MPLABXProjects/ServoTest877A.X/main.asm 196 : Register in operand not in bank 0.  Ensure that bank bits are correct.

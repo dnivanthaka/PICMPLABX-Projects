@@ -1,0 +1,535 @@
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  1
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00001 ;******************************************************************************
+                      00002 ;   This file is a basic code template for object module code                 *
+                      00003 ;   generation on the PIC12F675. This file contains the                       *
+                      00004 ;   basic code building blocks to build upon.                                 *
+                      00005 ;                                                                             *
+                      00006 ;   Refer to the MPASM User's Guide for additional information on             *
+                      00007 ;   features of the assembler and linker (Document DS33014).                  *
+                      00008 ;                                                                             *
+                      00009 ;   Refer to the respective PIC data sheet for additional                     *
+                      00010 ;   information on the instruction set.                                       *
+                      00011 ;                                                                             *
+                      00012 ;******************************************************************************
+                      00013 ;                                                                             *
+                      00014 ;    Filename:      xxx.asm                                                   *
+                      00015 ;    Date:                                                                    *
+                      00016 ;    File Version:                                                            *
+                      00017 ;                                                                             *
+                      00018 ;    Author:                                                                  *
+                      00019 ;    Company:                                                                 *
+                      00020 ;                                                                             *
+                      00021 ;                                                                             *
+                      00022 ;******************************************************************************
+                      00023 ;                                                                             *
+                      00024 ;    Files required: P12F675.INC                                              *
+                      00025 ;                                                                             *
+                      00026 ;                                                                             *
+                      00027 ;                                                                             *
+                      00028 ;******************************************************************************
+                      00029 ;                                                                             *
+                      00030 ;    Notes:                                                                   *
+                      00031 ;                                                                             *
+                      00032 ;******************************************************************************
+                      00033 
+                      00034 ;------------------------------------------------------------------------------
+                      00035 ; PROCESSOR DECLARATION
+                      00036 ;------------------------------------------------------------------------------
+                      00037 
+                      00038      LIST      p=12f675              ; list directive to define processor
+                      00039     #include <p12f675.inc>          ; processor specific variable definitions
+                      00001         LIST
+                      00002 
+                      00003 ;==========================================================================
+                      00004 ; Build date : Oct 21 2015
+                      00005 ;  MPASM PIC12F675 processor include
+                      00006 ; 
+                      00007 ;  (c) Copyright 1999-2015 Microchip Technology, All rights reserved
+                      00008 ;==========================================================================
+                      00009 
+                      00367         LIST
+                      00040 
+                      00041 ;------------------------------------------------------------------------------
+                      00042 ;
+                      00043 ; CONFIGURATION WORD SETUP
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  2
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00044 ;
+                      00045 ; The 'CONFIG' directive is used to embed the configuration word within the 
+                      00046 ; .asm file. The lables following the directive are located in the respective 
+                      00047 ; .inc file.  See the data sheet for additional information on configuration 
+                      00048 ; word settings.
+                      00049 ;
+                      00050 ;------------------------------------------------------------------------------
+                      00051 
+2007   3FA4           00052     __CONFIG   _CP_OFF & _CPD_OFF & _BODEN_OFF & _MCLRE_ON & _WDT_OFF & _PWRTE_ON & _INTRC_OSC_NOCLKOUT 
+                      00053     ;__CONFIG   _CP_OFF & _CPD_OFF & _BODEN_OFF & _MCLRE_ON & _WDT_OFF & _PWRTE_ON & _FOSC_HS
+                      00054 
+                      00055 ;------------------------------------------------------------------------------
+                      00056 ; VARIABLE DEFINITIONS
+                      00057 ;------------------------------------------------------------------------------
+                      00058 
+                      00059         
+                      00060 ; example of using Shared Uninitialized Data Section
+                      00061 INT_VAR     UDATA_SHR   0x20   
+0020                  00062 W_TEMP      RES     1             ; variable used for context saving 
+0021                  00063 STATUS_TEMP RES     1             ; variable used for context saving
+0022                  00064 counter RES     1 
+                      00065 
+                      00066 
+                      00067 ;------------------------------------------------------------------------------
+                      00068 ; EEPROM INITIALIZATION
+                      00069 ;
+                      00070 ; The 12F675 has 128 bytes of non-volatile EEPROM, starting at address 0x2100
+                      00071 ; 
+                      00072 ;------------------------------------------------------------------------------
+                      00073 ;DATAEE    CODE  0x2100
+                      00074 ;    DE    "MCHP"          ; Place 'M' 'C' 'H' 'P' at address 0,1,2,3
+                      00075 
+                      00076 ;------------------------------------------------------------------------------
+                      00077 ; OSCILLATOR CALIBRATION VALUE
+                      00078 ;------------------------------------------------------------------------------
+                      00079 
+                      00080 ;OSC       CODE    0x03FF
+                      00081 
+                      00082 ; Internal RC calibration value is placed at location 0x3FF by Microchip as
+                      00083 ; a 0xADDLW K instruction, where the K is a literal value to be loaded into 
+                      00084 ; the OSCCAL register.  
+                      00085 
+                      00086 ;------------------------------------------------------------------------------
+                      00087 ; RESET VECTOR
+                      00088 ;------------------------------------------------------------------------------
+                      00089 
+                      00090 RESET_VECTOR  CODE    0x0000  ; processor reset vector
+0000   2???           00091         GOTO    START         ; go to beginning of program
+                      00092 
+                      00093 ;------------------------------------------------------------------------------
+                      00094 ; INTERRUPT SERVICE ROUTINE
+                      00095 ;------------------------------------------------------------------------------
+                      00096 
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  3
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00097 INT_VECTOR    CODE    0x0004  ; interrupt vector location
+0004   00??           00098         MOVWF   W_TEMP        ; save off current W register contents
+0005   0803           00099         MOVF    STATUS,w      ; move status register into W register
+0006   00??           00100         MOVWF   STATUS_TEMP   ; save off contents of STATUS register
+                      00101 
+0007   1283           00102        banksel INTCON
+0008   1C0B           00103        btfss        INTCON, GPIF
+0009   2???           00104        goto         __TMR1_TIMEOUT__
+                      00105        
+000A   3000           00106        movlw    .0
+000B   ????           00107        banksel  counter
+000C   06??           00108        xorwf    counter, w
+Message[312]: Page or Bank selection not needed for this device.  No code generated.
+                      00109        pagesel  start_counter
+000D   1903           00110        btfsc            STATUS, Z
+000E   2???           00111        call             start_counter
+                      00112        
+                      00113        
+000F   ????           00114        banksel  counter
+0010   0A??           00115        incf counter, f
+                      00116        
+                      00117        ;Checking for count
+0011   3005           00118        movlw    .5
+0012   ????           00119        banksel  counter
+0013   06??           00120        xorwf    counter, w
+Message[312]: Page or Bank selection not needed for this device.  No code generated.
+                      00121        pagesel  toggle_leds
+0014   1903           00122        btfsc            STATUS, Z
+0015   2???           00123        call             toggle_leds
+                      00124        
+                      00125        ;Enabling IOC interrupt
+0016   1283           00126        banksel  INTCON
+0017   100B           00127        bcf              INTCON, GPIF
+                      00128        
+0018                  00129 __TMR1_TIMEOUT__
+                      00130        
+0018   ????           00131       banksel   counter
+0019   01??           00132       clrf              counter
+                      00133       
+001A   1283           00134       banksel   TMR1H
+001B   018F           00135       clrf              TMR1H
+                      00136       
+001C   1283           00137       banksel   TMR1L
+001D   018E           00138       clrf              TMR1L
+                      00139       
+                      00140       ; Stopping the timer
+001E   3000           00141       movlw     0<<TMR1IE
+001F   1683           00142       banksel   PIE1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0020   008C           00143       movwf     PIE1
+                      00144         
+0021   3000           00145       movlw     0<<PEIE
+0022   1283           00146       banksel   INTCON
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  4
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+0023   008B           00147       movwf     INTCON
+                      00148       
+0024   1283           00149       banksel   PIR1
+0025   100C           00150       bcf               PIR1, TMR1IF
+                      00151       
+                      00152 
+0026   08??           00153         MOVF    STATUS_TEMP,w ; retrieve copy of STATUS register
+0027   0083           00154         MOVWF   STATUS        ; restore pre-isr STATUS register contents
+0028   0E??           00155         SWAPF   W_TEMP,f
+0029   0E??           00156         SWAPF   W_TEMP,w      ; restore pre-isr W register contents
+002A   0009           00157         RETFIE                ; return from interrupt
+                      00158 
+                      00159 ;------------------------------------------------------------------------------
+                      00160 ; MAIN PROGRAM
+                      00161 ;------------------------------------------------------------------------------
+                      00162 
+                      00163 MAIN_PROG     CODE
+                      00164 
+0000                  00165 START
+                      00166 
+                      00167 ;------------------------------------------------------------------------------
+                      00168 ; OSCCAL RESTORE (not required if internal OSC is not used)
+                      00169 ;------------------------------------------------------------------------------
+                      00170 
+                      00171 ;        errorlevel -302
+                      00172 ;        BSF     STATUS,RP0    ; set file register bank to 1 
+                      00173 ;        CALL    0x3FF         ; retrieve factory calibration value
+                      00174 ;        MOVWF   OSCCAL        ; update register with factory cal value 
+                      00175 ;        BCF     STATUS,RP0    ; set file register bank to 0
+                      00176 ;        errorlevel +302
+                      00177 
+                      00178 ;------------------------------------------------------------------------------
+                      00179 ; PLACE USER PROGRAM HERE
+                      00180 ;------------------------------------------------------------------------------
+                      00181 
+0000   2???           00182         GOTO $
+                      00183 
+                      00184         
+0001                  00185 pic_init
+                      00186         ; Shutting down A/D
+0001   1283           00187         bcf STATUS, RP0
+0002   0185           00188         clrf    GPIO
+0003   3007           00189         movlw   0x07
+0004   0099           00190         movwf   CMCON
+0005   1683           00191         bsf STATUS, RP0
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0006   019F           00192         clrf    ANSEL
+                      00193         
+                      00194         
+0007   3002           00195         movlw   1<<GP1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0008   0085           00196         movwf   TRISIO
+                      00197         
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  5
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00198         ; Setting up GPIO interrupts, GPIO1
+0009   3002           00199         movlw   1<<IOC1
+000A   1683           00200         banksel IOC
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+000B   0096           00201         movwf   IOC
+                      00202         
+000C   3008           00203         movlw   1<<GPIE
+000D   1283           00204         banksel INTCON
+000E   008B           00205         movwf   INTCON
+                      00206         
+000F   3000           00207         movlw   0<<TRISIO4
+0010   1683           00208         banksel TRISIO
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+0011   0085           00209         movwf   TRISIO
+                      00210         
+0012   0090           00211         movwf   1<<GP4
+0013   1283           00212         banksel GPIO
+0014   0085           00213         movwf   GPIO
+                      00214         
+                      00215         
+                      00216         ;movlw  1<<GIE
+                      00217         ;banksel        INTCON
+                      00218         ;movwf  INTCON
+                      00219         
+                      00220         ;Setting up Timer 1, but not enabling it still
+                      00221         
+                      00222         ;movlw  1<<TMR1IE
+                      00223         ;banksel        PIE1
+                      00224         ;movwf  PIE1
+                      00225         
+                      00226         ;movlw  1<<PEIE
+                      00227         ;banksel        INTCON
+                      00228         ;movwf  INTCON
+                      00229         
+0015   3080           00230         movlw   1<<GIE
+0016   008B           00231         movwf   INTCON
+                      00232         
+                      00233         
+0017   0008           00234         return
+                      00235         
+0018                  00236 start_counter
+0018   3001           00237         movlw   1<<TMR1IE
+0019   1683           00238         banksel PIE1
+Message[302]: Register in operand not in bank 0.  Ensure that bank bits are correct.
+001A   008C           00239         movwf   PIE1
+                      00240         
+001B   3040           00241         movlw   1<<PEIE
+001C   1283           00242         banksel INTCON
+001D   008B           00243         movwf   INTCON
+                      00244         
+001E   0008           00245         return
+                      00246         
+001F                  00247 toggle_leds
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  6
+
+
+LOC  OBJECT CODE     LINE SOURCE TEXT
+  VALUE
+
+                      00248         
+001F   0008           00249         return
+3FA4                  00250         END                       ; directive 'end of program'
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  7
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+ADCON0                            0000001F
+ADCS0                             00000004
+ADCS1                             00000005
+ADCS2                             00000006
+ADFM                              00000007
+ADIE                              00000006
+ADIF                              00000006
+ADON                              00000000
+ADRESH                            0000001E
+ADRESL                            0000009E
+ANS0                              00000000
+ANS1                              00000001
+ANS2                              00000002
+ANS3                              00000003
+ANSEL                             0000009F
+C                                 00000000
+CAL0                              00000002
+CAL1                              00000003
+CAL2                              00000004
+CAL3                              00000005
+CAL4                              00000006
+CAL5                              00000007
+CHS0                              00000002
+CHS1                              00000003
+CINV                              00000004
+CIS                               00000003
+CM0                               00000000
+CM1                               00000001
+CM2                               00000002
+CMCON                             00000019
+CMIE                              00000003
+CMIF                              00000003
+COUT                              00000006
+DC                                00000001
+EEADR                             0000009B
+EECON1                            0000009C
+EECON2                            0000009D
+EEDAT                             0000009A
+EEDATA                            0000009A
+EEIE                              00000007
+EEIF                              00000007
+F                                 00000001
+FSR                               00000004
+GIE                               00000007
+GO                                00000001
+GO_DONE                           00000001
+GO_NOT_DONE                       00000001
+GP0                               00000000
+GP1                               00000001
+GP2                               00000002
+GP3                               00000003
+GP4                               00000004
+GP5                               00000005
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  8
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+GPIE                              00000003
+GPIF                              00000000
+GPIO                              00000005
+GPIO0                             00000000
+GPIO1                             00000001
+GPIO2                             00000002
+GPIO3                             00000003
+GPIO4                             00000004
+GPIO5                             00000005
+INDF                              00000000
+INTCON                            0000000B
+INTE                              00000004
+INTEDG                            00000006
+INTF                              00000001
+IOC                               00000096
+IOC0                              00000000
+IOC1                              00000001
+IOC2                              00000002
+IOC3                              00000003
+IOC4                              00000004
+IOC5                              00000005
+IOCB                              00000096
+IOCB0                             00000000
+IOCB1                             00000001
+IOCB2                             00000002
+IOCB3                             00000003
+IOCB4                             00000004
+IOCB5                             00000005
+IRP                               00000007
+NOT_BOD                           00000000
+NOT_BOR                           00000000
+NOT_DONE                          00000001
+NOT_GPPU                          00000007
+NOT_PD                            00000003
+NOT_POR                           00000001
+NOT_T1SYNC                        00000002
+NOT_TO                            00000004
+OPTION_REG                        00000081
+OSCCAL                            00000090
+PCL                               00000002
+PCLATH                            0000000A
+PCON                              0000008E
+PEIE                              00000006
+PIE1                              0000008C
+PIR1                              0000000C
+PS0                               00000000
+PS1                               00000001
+PS2                               00000002
+PSA                               00000003
+RD                                00000000
+RP0                               00000005
+RP1                               00000006
+START                             00000000
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE  9
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+STATUS                            00000003
+STATUS_TEMP                       00000021
+T0CS                              00000005
+T0IE                              00000005
+T0IF                              00000002
+T0SE                              00000004
+T1CKPS0                           00000004
+T1CKPS1                           00000005
+T1CON                             00000010
+T1IE                              00000000
+T1IF                              00000000
+T1OSCEN                           00000003
+TMR0                              00000001
+TMR0IE                            00000005
+TMR0IF                            00000002
+TMR1                              0000000E
+TMR1CS                            00000001
+TMR1GE                            00000006
+TMR1H                             0000000F
+TMR1IE                            00000000
+TMR1IF                            00000000
+TMR1L                             0000000E
+TMR1ON                            00000000
+TRISIO                            00000085
+TRISIO0                           00000000
+TRISIO1                           00000001
+TRISIO2                           00000002
+TRISIO3                           00000003
+TRISIO4                           00000004
+TRISIO5                           00000005
+VCFG                              00000006
+VR0                               00000000
+VR1                               00000001
+VR2                               00000002
+VR3                               00000003
+VRCON                             00000099
+VREN                              00000007
+VRR                               00000005
+W                                 00000000
+WPU                               00000095
+WPU0                              00000000
+WPU1                              00000001
+WPU2                              00000002
+WPU4                              00000004
+WPU5                              00000005
+WR                                00000001
+WREN                              00000002
+WRERR                             00000003
+W_TEMP                            00000020
+Z                                 00000002
+_BODEN_OFF                        00003FBF
+_BODEN_ON                         00003FFF
+_BOREN_OFF                        00003FBF
+MPASM 5.64  /HOME/DINUSHA/MPLABXPROJECTS/SHA   11-14-2015  9:15:00         PAGE 10
+
+
+SYMBOL TABLE
+  LABEL                             VALUE 
+
+_BOREN_ON                         00003FFF
+_CONFIG                           00002007
+_CPD_OFF                          00003FFF
+_CPD_ON                           00003EFF
+_CP_OFF                           00003FFF
+_CP_ON                            00003F7F
+_DEVID1                           00002006
+_EC_OSC                           00003FFB
+_EXTRC_OSC_CLKOUT                 00003FFF
+_EXTRC_OSC_NOCLKOUT               00003FFE
+_FOSC_EC                          00003FFB
+_FOSC_EXTRCCLK                    00003FFF
+_FOSC_EXTRCIO                     00003FFE
+_FOSC_HS                          00003FFA
+_FOSC_INTRCCLK                    00003FFD
+_FOSC_INTRCIO                     00003FFC
+_FOSC_LP                          00003FF8
+_FOSC_XT                          00003FF9
+_HS_OSC                           00003FFA
+_IDLOC0                           00002000
+_IDLOC1                           00002001
+_IDLOC2                           00002002
+_IDLOC3                           00002003
+_INTRC_OSC_CLKOUT                 00003FFD
+_INTRC_OSC_NOCLKOUT               00003FFC
+_LP_OSC                           00003FF8
+_MAIN_PROG_0000                   00000000
+_MCLRE_OFF                        00003FDF
+_MCLRE_ON                         00003FFF
+_PWRTE_OFF                        00003FFF
+_PWRTE_ON                         00003FEF
+_WDTE_OFF                         00003FF7
+_WDTE_ON                          00003FFF
+_WDT_OFF                          00003FF7
+_WDT_ON                           00003FFF
+_XT_OSC                           00003FF9
+__12F675                          00000001
+__TMR1_TIMEOUT__                  00000018
+counter                           00000022
+pic_init                          00000001
+start_counter                     00000018
+toggle_leds                       0000001F
+
+Errors   :     0
+Warnings :     0 reported,     0 suppressed
+Messages :     8 reported,     0 suppressed
+
+

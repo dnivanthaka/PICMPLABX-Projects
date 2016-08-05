@@ -1,0 +1,67 @@
+Error[150]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 1 : Labels must be defined in a code or data section when making an object file
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 2 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 2 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 2 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 3 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 3 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 4 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 4 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 6 : Symbol not previously defined (servo1_val)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 6 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 6 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 7 : Symbol not previously defined (servo1_val)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 7 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 8 : Symbol not previously defined (STATUS)
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 8 : Symbol not previously defined (Z)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 8 : Executable code and data must be defined in an appropriate section
+Error[151]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 10 : Operand contains unresolvable labels or is too complex
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 10 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 12 : Symbol not previously defined (PORTB)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 12 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 12 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 14 : Symbol not previously defined (PORTB)
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 14 : Symbol not previously defined (RC1)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 14 : Executable code and data must be defined in an appropriate section
+Error[150]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 16 : Labels must be defined in a code or data section when making an object file
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 17 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 17 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 17 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 18 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 18 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 19 : Symbol not previously defined (servo2_val)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 19 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 19 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 20 : Symbol not previously defined (servo2_val)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 20 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 21 : Symbol not previously defined (STATUS)
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 21 : Symbol not previously defined (Z)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 21 : Executable code and data must be defined in an appropriate section
+Error[151]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 23 : Operand contains unresolvable labels or is too complex
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 23 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 25 : Symbol not previously defined (PORTB)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 25 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 25 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 27 : Symbol not previously defined (PORTB)
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 27 : Symbol not previously defined (RC2)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 27 : Executable code and data must be defined in an appropriate section
+Error[150]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 29 : Labels must be defined in a code or data section when making an object file
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 31 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 31 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 31 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 32 : Symbol not previously defined (free_counter)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 32 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 33 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 34 : Symbol not previously defined (STATUS)
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 34 : Symbol not previously defined (Z)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 34 : Executable code and data must be defined in an appropriate section
+Error[151]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 35 : Operand contains unresolvable labels or is too complex
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 35 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 37 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 38 : Symbol not previously defined (PORTB)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 38 : Executable code and data must be defined in an appropriate section
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 38 : Executable code and data must be defined in an appropriate section
+Error[113]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 39 : Symbol not previously defined (PORTB)
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 39 : Executable code and data must be defined in an appropriate section
+Error[150]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 41 : Labels must be defined in a code or data section when making an object file
+Error[152]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 54 : Executable code and data must be defined in an appropriate section
+Error[129]   /home/dinusha/MPLABXProjects/ServoTest877A.X/backup.asm 57 : Expected (END)

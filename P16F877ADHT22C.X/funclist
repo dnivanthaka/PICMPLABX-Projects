@@ -1,0 +1,8 @@
+_init: CODE, 1636 0 17
+_dht22_start: CODE, 1712 0 57
+_dht22_init: CODE, 1653 0 26
+_main: CODE, 1867 0 171
+_dht22_read: CODE, 1769 0 98
+__initialization: CODE, 2038 0 6
+_blink: CODE, 1679 0 33
+Total: 408
